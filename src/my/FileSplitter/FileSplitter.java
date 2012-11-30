@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -20,13 +18,13 @@ public class FileSplitter {
  public ArrayList<String> readAndFragment ( String SourceFileName, int CHUNK_SIZE ) throws IOException
 
  {
+  
+  FileManager fm =new FileManager(); 
   //log ("File Is Reading "+ SourceFileName );
   File willBeRead = new File ( SourceFileName );
   int FILE_SIZE = (int) willBeRead.length();
   ArrayList<String> nameList = new ArrayList<String> ();
-  
-  System.out.println("Total File Size: "+FILE_SIZE);
-  
+  String path="C://Users/manas/Downloads/Programming interviews exposed.pdf";
   int NUMBER_OF_CHUNKS = 1;
   byte[] temporary = null;
   
@@ -39,13 +37,12 @@ public class FileSplitter {
     
     while ( totalBytesRead < FILE_SIZE )
     {
-     String PART_NAME ="data"+NUMBER_OF_CHUNKS+".bin";
+     String PART_NAME =FileManager.getFileName(path)+NUMBER_OF_CHUNKS+".bin";
      int bytesRemaining = FILE_SIZE-totalBytesRead;
      if ( bytesRemaining < CHUNK_SIZE ) // Remaining Data Part is Smaller Than CHUNK_SIZE
                 // CHUNK_SIZE is assigned to remain volume
      {
       CHUNK_SIZE = bytesRemaining;
-      System.out.println("CHUNK_SIZE: "+CHUNK_SIZE);
      }
      temporary = new byte[CHUNK_SIZE]; //Temporary Byte Array
      int bytesRead = inStream.read(temporary, 0, CHUNK_SIZE);
@@ -56,9 +53,11 @@ public class FileSplitter {
       NUMBER_OF_CHUNKS++;
      }
      
-     write(temporary, "D://"+PART_NAME);
-     nameList.add("D://"+PART_NAME);
-     System.out.println("Total Bytes Read: "+totalBytesRead);
+    	 
+      write(temporary, "D://"+PART_NAME);
+     
+     //nameList.add("D://"+PART_NAME);
+     System.out.println("Total Bytes Read: "+totalBytesRead + PART_NAME);
     }
     
    }
