@@ -46,9 +46,16 @@ public class FileManager {
 	}
 	
 	public static int getNumberOfParts(String path){
-		int parts= (getFileSize(path)/CHUNKSIZE) + 1;
-		System.out.println("Number of Parts : "+ parts);
-		return parts;
+            int parts= (getFileSize(path)/CHUNKSIZE) + 1;
+            System.out.println("Number of Parts : "+ parts);
+            return parts;
 	}
-
+        
+        public boolean isAvailable(int[50]){
+           String[] array= new String[50];
+           
+           return true;
+            
+        }
+        
 }
