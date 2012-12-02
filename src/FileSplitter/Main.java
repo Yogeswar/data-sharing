@@ -9,16 +9,16 @@ public class Main {
 	final static int CHUNKSIZE=100000;
 	
 	public static void main(String args[]){
-		
-		FileSplitter fs=new FileSplitter();
-		FileManager fm = new FileManager();
 		String path="C://Users/manas/Downloads/Programming interviews exposed.pdf";
+		FileSplitter fs=new FileSplitter();
+		FileManager fm = new FileManager(path);
+		
 		
 		   // If File Name is Crack.pdf , It will Return Crack
-		String name=fm.getFileName(path);                        
+		String name=fm.getFileName();                        
 		
 		// If File Name is Crack.pdf , It will Return pdf
-		String extension=fm.getFileExtension(path);
+		String extension=fm.getFileExtension();
 		
 		try {
 			
@@ -28,24 +28,24 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		int numparts=FileManager.getNumberOfParts(path);
+		int numparts=fm.getNumberOfParts();
 		ArrayList<String> filename = new ArrayList<String>();
 		for (int i=1;i<=numparts;i++){
-                        filename.add("D://"+FileManager.getFileName(path)+i+".bin");
+                        filename.add("D://"+fm.getFileName()+i+".bin");
 			//filename.add("D://data"+i+".bin");
 			//filename.add("D://+""+ name+ ""+"+i+".bin");
 			//filename.add("D://data"+i+"."+extension);
 		}
-		String fileename=FileManager.getFileName(path);
-                String ext=FileManager.getFileExtension(path);
+		String fileename=fm.getFileName();
+                String ext=fm.getFileExtension();
 		//fs.mergeParts(filename, "D://book.pdf");
 		fs.mergeParts(filename, "D://"+fileename+"."+ext);
-		String fileext=fm.getFileExtension(path);
+		String fileext=fm.getFileExtension();
 		System.out.println("File Extension : "+ fileext);
 		
-		String fname= fm.getFileName(path);
+		String fname= fm.getFileName();
 		System.out.println("File Name :" + fname);
-		fm.getNumberOfParts(path);
+		fm.getNumberOfParts();
 	}
 		
 
