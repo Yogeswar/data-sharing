@@ -1,5 +1,5 @@
 //writes serialized contents to file "table"
-import DataManager.*;
+package Scomm;
 import java.io.File;
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
@@ -19,7 +19,6 @@ FileOutputStream fos = null;
 			
        fos = new FileOutputStream(filename);
        out = new ObjectOutputStream(fos);
-       //write serialized object to file
        out.writeObject(str);
        out.close();
        
@@ -31,3 +30,4 @@ FileOutputStream fos = null;
     }
 	}
 }
+

@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import store.storage;
+import DataManager.Node;
 import utils.*;
 
 public class MessageBuilder 
@@ -42,9 +42,10 @@ public class MessageBuilder
 	}
 
 	//Register the client details at the Server
-	public storage registerServer(String ip)
+	public Node registerServer(String ip)
 	{
-		storage myip = new storage();
+		//storage myip = new storage();
+                Node myip =new Node(ip, ip, CMD_AM_HERE);
 		
 		try 
 		{
