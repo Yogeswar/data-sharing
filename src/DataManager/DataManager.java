@@ -35,6 +35,13 @@ public class DataManager {
         listener.requestDataUpdate();
     }
     
+    public Object getDataUpdate(){
+        Object[] obj = new Object[2]; 
+        obj[0] = this.timeStamp;
+        obj[1] = this.directory;
+        return obj;
+    }
+    
     public List<String> addDir(String pathName){
         if(data.get(this.selfTimeStamp.getIp()) != null){           
             data.get(this.selfTimeStamp.getId()).addDirectory(data.get(this.selfTimeStamp.getId()), pathName);        
@@ -47,8 +54,9 @@ public class DataManager {
     }
     
     
-    public void recieveUpdate(Map<String, Node> timeStamp, Map<String, Directory> recvData){
+    public List<String> recieveUpdate(Map<String, Node> timeStamp, Map<String, Directory> recvData){
         this.updateTimeStamp(timeStamp);
+        List<String> allList = new ArrayList<String>();
         for (Map.Entry<String,Directory> entry : recvData.entrySet()) {
             String key = entry.getKey();
             Directory recvdir = entry.getValue();
@@ -56,7 +64,9 @@ public class DataManager {
             if(dir.getVersion() < recvdir.getVersion()){
                 this.data.put(key, recvdir);
             }
+            allList.addAll(this.data.get(key).finalDirectory);            
         }
+        return allList;
     }
     
     public void requestLock(String pathName){
