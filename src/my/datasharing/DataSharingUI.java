@@ -319,8 +319,9 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         // TODO add your handling code here:
     }//GEN-LAST:event_addFileComboBoxActionPerformed
 
+    //data Manager function 
     public void revieveUpdate(Map<String, Node> timeStamp, Map<String, Directory> recvData){
-        this.nodes = timeStamp;
+        this.timeStamp = timeStamp;
         this.setListOfDirectionDownloadComboBox(this.dataManager.recieveUpdate(timeStamp, recvData));
     }
     
@@ -339,7 +340,12 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             this.builder.reqLock(node.getIp(), request);
         }       
     }
+    
+    public void locked(String request){
+        
+    }
 
+    //parser function calls
         public void IpUpdate(Map<String, Node> timestamp, String recvIp){
             this.timeStamp = timestamp;
         }
@@ -348,13 +354,35 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             this.builder.dataUpdate(recvIp, this.dataManager.getDataUpdate());
         }
         
-        public void ReqLock(String recvIp, String request){}
-        public void ReqFileDetails(String recvIp, String request){}
-        public void ReqFileBlock(String recvIp, String request, int blockId){}
-        public void DataUpdate(String recvIp, Map<String, Directory> data){}
-        public void AckLock(String recvIp, String request){}
-        public void FileDetails(String recvIp, String request){}
-        public void FileBlock(String recvIp, String request){}
+        public void ReqLock(String recvIp, String request){
+            if(this.dataManager.lockRequested(request, recvIp)){
+                this.builder.ackLock(recvIp);
+            }
+        }
+        
+        public void ReqFileDetails(String recvIp, String request){
+            
+        }
+        
+        public void ReqFileBlock(String recvIp, String request, int blockId){
+        
+        }
+        
+        public void DataUpdate(String recvIp, Object[] obj){
+            this.dataManager.recieveUpdate((Map<String, Node>)obj[0], (Map<String, Directory>)obj[1]);
+        }
+        
+        public void AckLock(String recvIp, String request){
+            this.dataManager.lockAck(recvIp, request);
+        }
+        
+        public void FileDetails(String recvIp, String request){
+        
+        }
+        
+        public void FileBlock(String recvIp, String request){
+        
+        }
 
     
     public void returnLockRequest(String request, String ip){
