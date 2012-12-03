@@ -25,6 +25,18 @@ public class Node {
         this.id = id;
         this.ip = ip;
     }
+    
+    public void increment(){
+        this.logicalTimestamp++;
+    }
+    
+    public boolean isLatest(int ts){
+        if(this.logicalTimestamp > ts){
+            return false;
+        }
+        return true;
+        
+    }
 
     public String getIp() {
         return ip;
