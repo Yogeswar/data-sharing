@@ -3,11 +3,9 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
@@ -16,11 +14,14 @@ import java.util.TreeMap;
  */
 
 /**
- * @author Paddy
+ * @author Pradeep Raghuwanshi
  *
  */
 public class Directory {
 	
+	private static final ArrayList<String> finalDirectory = new ArrayList<String>();
+
+
 	/*
 	 * Map contains the key as the pathname of the directory and value as the Directory Object with all child directories and files information.
 	 */
@@ -34,7 +35,7 @@ public class Directory {
 	
 	
 	// To save the final Directory structure after add or removal
-	public List<String> finalDirectory = new ArrayList<String>();
+	
 	
 	// to check whether the file is readLocked or not by passing pathname of File. If value returned is 0, status of file is  unlocked , if 1 it is locked
 	public TreeMap<String, Integer> isFileReadLocked = new TreeMap<String, Integer>();
@@ -71,13 +72,9 @@ public class Directory {
 	// Function to add directory and remove directory, which in turn should remove all the sub directories and files.
 	
 
-	/*Directory (String pathname){
-		saveDirInfo("src\\files1\\data");
-		System.out.println(directoryContent.get("src\\files1\\data").getSubDirectoriesPath());
-		System.out.println(directoryContent.get("src\\files1\\data").getSubFilesPath());
-		System.out.println(directoryContent.get("src\\files1\\data\\sonali").getSubDirectoriesPath());
-	}*/
-	
+	/*
+	 * Default constructor
+	 */
 	public Directory(){
 		
 	}
@@ -96,7 +93,6 @@ public class Directory {
 		if(strFilesDirs != null)
 			size = strFilesDirs.length;
 		//To save the current directory details
-		//Directory tempDir = new Directory();
 		
 		ArrayList<Directory> tempSubDirectories = new ArrayList<Directory>(); // temporary arraylist to save sub directories names
 		ArrayList<String> tempSubFiles = new ArrayList<String>(); // temporary arraylist to save sub files names
@@ -105,20 +101,12 @@ public class Directory {
 		this.isDirReadLocked.put(pathname, 0); // adding directory with status as unlocked i.e value 0.
 		this.setDateCreated(dateFormat.format(date));
 		this.setDirectoryName(pathname);
-                this.finalDirectory.add(pathname);
 		for ( int i = 0 ; i < size ; i ++ ) {
 			if ( strFilesDirs[i].isDirectory ( ) ) {
-				//System.out.println ( "Directory is: " + strFilesDirs[i] ) ;
-				//tempDir.setSubDirectoryPath(strFilesDirs[i].toString());
-				//tempDir.setDirectoryName(strFilesDirs[i].toString());
 				tempSubDirectories.add(new Directory(strFilesDirs[i].toString()));
-				
 				childDirectories.add(strFilesDirs[i].toString());
 			}
 			else if ( strFilesDirs[i].isFile ( ) ){
-				//System.out.println ( "File is : " + strFilesDirs[i] ) ;
-				//tempDir.setSubFilePath(strFilesDirs[i].toString());
-				//tempDir.setSubFileName(strFilesDirs[i].toString());
 				this.isFileReadLocked.put(strFilesDirs[i].toString(), 0); // adding file with status as unlocked i.e value 0.
 				this.setSubFileName(strFilesDirs[i].toString());
 				tempSubFiles.add(strFilesDirs[i].toString());
@@ -127,12 +115,9 @@ public class Directory {
 		
 		this.setSubDirectoriesPath(tempSubDirectories); // storing sub directories of the current directory
 		this.setSubFilesPath(tempSubFiles); // storing sub files of the current directory
-		//directoryContent.put(pathname, this); // storing the current directory object in a tree map
 		
-		/*// Iterating for each child directory
-		for (String temp : childDirectories){
-			saveDirInfo(temp);
-		}*/
+		if(pathname.indexOf(".") == -1 && !getFinaldirectory().contains(pathname))
+			getFinaldirectory().add(pathname);
 		
 		
 	}
@@ -141,16 +126,7 @@ public class Directory {
 	public void returnValues(){
 		
 		System.out.println("Directory path is:-"+this.getDirectoryPath());
-//		for(Map.Entry<String,Directory> entry : directoryContent.entrySet()) {
-//			
-//			  String key = entry.getKey();
-//			  Directory dir = entry.getValue();
-////			  System.out.println(dir.getDirectoryName());
-//			  dir.returnValues();
-//			
-//		}
-		//use this while part to implement remove. 
-		//check directory pathname if it matches the remove requested pathname, remove it from
+
 		// subDirectoriesPath
 		Iterator<Directory> itr = this.subDirectoriesPath.iterator();
 		while(itr.hasNext()){
@@ -159,31 +135,22 @@ public class Directory {
 		}
 
 		Iterator<String> itr1 = this.subFilesPath.iterator();
-		//System.out.println("");
+		
 		while(itr1.hasNext()){
 			System.out.println("Files:"+itr1.next());
 		}
-		//System.out.println("");
 		
-		
-		
-		/*for (TreeMap temp : directoryContent){
-			//saveDirInfo(temp);
-		}*/
 	}
 	
 	/*
 	 * Method to delete directory from the actual directory structure
 	 */
 	public Directory deleteDirectory(Directory dir, String dirPathname){
-		// create virtual directory as top level directory which will have root directory in order to delete root directory
-		this.setVersion(version++);
 		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
 		while(itr.hasNext()){
 			Directory tempDir = itr.next();
-			//System.out.println("Directory path----------------- "+tempDir.getDirectoryPath());
 			if(dirPathname.equals(tempDir.getDirectoryPath())){
-				//System.out.println("Inside Dir");
+				version++;
 				itr.remove();
 				return dir; // if found in sub directory of Directory passed (i.e dir here) than remove sub directory from current directory and pass dir.
 			}else{
@@ -204,14 +171,11 @@ public class Directory {
 	 * Method to add directory to the actual directory structure
 	 */
 	public Directory addDirectory(Directory dir, String dirPathname){
-		// create virtual directory as top level directory which will have root directory in order to delete root directory
-		//System.out.println("Pathname: "+dirPathname);
 		List<String> directoryList = new ArrayList<String>();
 		Iterator<String> wordsIterator ;
 		StringTokenizer st = new StringTokenizer(dirPathname, "\\");
 		while (st.hasMoreTokens()){
 			String tempWord = st.nextToken().toString();
-			//System.out.println(tempWord);
 			directoryList.add(tempWord);
 		}
 		wordsIterator = directoryList.iterator();
@@ -227,10 +191,6 @@ public class Directory {
 			}
 			tempCount++;
 		}
-		
-		
-		//System.out.println("parent directory is: "+parentDir);
-		//System.out.println("Existing directory size -------------------"+directoryList.size()+"n-1 word is:"+directoryList.get(directoryList.size()-2));
 		
 		
 		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
@@ -266,15 +226,15 @@ public class Directory {
 		
 		while(itr.hasNext()){ // for each directory
 			Directory tempDir = itr.next();
-			Iterator<String> itrTemp = tempDir.getSubFilesPath().iterator(); // to iterate all files in the current directory
+			Iterator<String> fileItr = tempDir.getSubFilesPath().iterator(); // to iterate all files in the current directory
 			
-			while(itrTemp.hasNext()){ // for each file in given directory
-				String tempFileName = itrTemp.next().trim();
+			while(fileItr.hasNext()){ // for each file in given directory
+				String tempFileName = fileItr.next().trim();
 				System.out.println("tempFileName -----"+tempFileName);
 				if(filePathname.trim().equals(tempFileName)){ // if file is found in sub directory of Directory passed 
 					version++;
 					System.out.println("Inside file searching file:- "+filePathname);
-					itrTemp.remove();	
+					fileItr.remove();	
 					return dir; // if file is found in sub directory of Directory passed (i.e dir here) than remove file from current directory and pass dir.
 				}
 			}
@@ -296,14 +256,11 @@ public class Directory {
 	 * Method to add directory to the actual directory structure
 	 */
 	public Directory addFile(Directory dir, String filePathname){
-		// create virtual directory as top level directory which will have root directory in order to delete root directory
-		//System.out.println("Pathname: "+dirPathname);
 		List<String> directoryList = new ArrayList<String>();
 		Iterator<String> wordsIterator ;
 		StringTokenizer st = new StringTokenizer(filePathname, "\\");
 		while (st.hasMoreTokens()){
 			String tempWord = st.nextToken().toString();
-			//System.out.println(tempWord);
 			directoryList.add(tempWord);
 		}
 		wordsIterator = directoryList.iterator();
@@ -321,27 +278,11 @@ public class Directory {
 		}
 		
 		
-		//System.out.println("parent directory is: "+parentDir);
-		//System.out.println("Existing directory size -------------------"+directoryList.size()+"n-1 word is:"+directoryList.get(directoryList.size()-2));
-		
-		
 		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
 		int count = -1;
 		while(itr.hasNext()){
 			count++;
 			Directory tempDir = itr.next();
-			//Iterator<String> itrTemp = tempDir.getSubFilesPath().iterator(); // to iterate all files in the current directory
-			
-			/*while(itrTemp.hasNext()){ // for each file in given directory
-				String tempFileName = itrTemp.next().trim();
-				System.out.println("tempFileName -----"+tempFileName);
-				if(filePathname.trim().equals(tempFileName)){
-					System.out.println("Inside file searching file:- "+filePathname);
-					itrTemp.remove();	
-					return dir; // if file is found in sub directory of Directory passed (i.e dir here) than remove file from current directory and pass dir.
-				}
-			}
-			*/
 			
 			System.out.println("Directory path-----------------"+tempDir.getDirectoryPath());
 			System.out.println("parent directory is:"+parentDir);
@@ -372,14 +313,13 @@ public class Directory {
 		}
 		
 		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
-		//System.out.println("File path:- "+filePathname);
 		
 		while(itr.hasNext()){ // for each directory
 			Directory tempDir = itr.next();
-			Iterator<String> itrTemp = tempDir.getSubFilesPath().iterator(); // to iterate all files in the current directory
+			Iterator<String> fileItr = tempDir.getSubFilesPath().iterator(); // to iterate all files in the current directory
 			
-			while(itrTemp.hasNext()){ // for each file in given directory
-				String tempFileName = itrTemp.next().trim();
+			while(fileItr.hasNext()){ // for each file in given directory
+				String tempFileName = fileItr.next().trim();
 				if(filePathname.trim().equals(tempFileName)){
 					System.out.println("Directory pathname:----------------------- "+tempDir.getDirectoryPath());
 					System.out.println("File pathname:---------------------------- "+tempFileName);
@@ -395,6 +335,31 @@ public class Directory {
 		return dir;
 	}
 	
+	
+	/*
+	 * Takes Top level Directory object and directory path as a parameter and returns list of files existing in the parent directory
+	 */
+	
+	public ArrayList<String> filesInDir(Directory dir, String dirPathname){
+		ArrayList<String> filesList = new ArrayList<String>();
+		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
+		while(itr.hasNext()){
+			Directory tempDir = itr.next();
+			
+			if(dirPathname.equals(tempDir.getDirectoryPath())){ // when the parent directory is found
+				Iterator<String> fileItr = tempDir.getSubFilesPath().iterator(); // to iterate all files in the current directory
+				while(fileItr.hasNext()){ // for each file in given directory
+					String tempFileName = fileItr.next().trim();
+					filesList.add(tempFileName);
+				}
+				return filesList;
+			}else{
+				// add the files to the filesList
+				filesList.addAll(filesInDir(tempDir, dirPathname)); // else pass the sub directory and check in sub directory for dir pathname.
+			}
+		}
+		return filesList;
+	}
 	
 	
 	
@@ -466,12 +431,6 @@ public class Directory {
 		this.subFilesPath = subFilesPath;
 	}
 
-	/**
-	 * @return the subDirectoriesPath
-	 *//*
-	public ArrayList<String> getSubDirectoriesPath() {
-		return subDirectoriesPath;
-	}*/
 	
 	/**
 	 * @return the subDirectoriesPath
@@ -483,9 +442,6 @@ public class Directory {
 	/**
 	 * @param subDirectoriesPath the subDirectoriesPath to set
 	 */
-	/*public void setSubDirectoriesPath(ArrayList<String> subDirectoriesPath) {
-		this.subDirectoriesPath = subDirectoriesPath;
-	}*/
 	
 	public void setSubDirectoriesPath(ArrayList<Directory> subDirectoriesPath) {
 		this.subDirectoriesPath = subDirectoriesPath;
@@ -643,5 +599,12 @@ public class Directory {
 	 */
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	/**
+	 * @return the final directory
+	 */
+	public static ArrayList<String> getFinaldirectory() {
+		return finalDirectory;
 	}
 }
