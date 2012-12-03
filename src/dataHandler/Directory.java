@@ -19,7 +19,7 @@ import java.util.TreeMap;
  */
 public class Directory {
 	
-	private static final ArrayList<String> finalDirectory = new ArrayList<String>();
+	public static final ArrayList<String> finalDirectory = new ArrayList<String>();
 
 
 	/*
