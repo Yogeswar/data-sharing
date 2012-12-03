@@ -117,7 +117,7 @@ public class DataStructure {
 		System.out.println("\nAfter deleting folder: ");
 		dirTemp.returnValues();*/
 		
-		dirTemp = dirTemp.addDirectory(dir, "src\\files1\\data\\sonali\\yogi\\new");
+		/*dirTemp = dirTemp.addDirectory(dir, "src\\files1\\data\\sonali\\yogi\\new");
 		System.out.println("\nAfter adding folder: ");
 		dirTemp.returnValues();
 		
@@ -135,8 +135,56 @@ public class DataStructure {
 		
 		dirTemp = dirTemp.addDirectory(dirTemp, "src\\files1\\data\\sonali\\yogi\\new");
 		System.out.println("\nAfter adding folder: ");
-		dirTemp.returnValues();
+		dirTemp.returnValues();*/
 		
+		
+		dir.addDirectory(dir, "src\\files1\\data\\sonali\\yogi\\new");
+		System.out.println("\nAfter adding folder: ");
+		dir.returnValues();
+		
+		dir.addFile(dir, "src\\files1\\data\\sonali\\yogi\\new\\n.txt");
+		System.out.println("\nAfter adding file: ");
+		dir.returnValues();
+		
+		dir.addFile(dir, "src\\files1\\data\\sonali\\yogi\\new\\n.word");
+		System.out.println("\nAfter adding file: ");
+		dir.returnValues();
+		
+		dir.deleteDirectory(dir,"src\\files1\\data\\sonali\\yogi\\new");
+		System.out.println("\nAfter deleting folder: ");
+		dir.returnValues();
+		
+		dir.addDirectory(dir, "src\\files1\\data\\sonali\\yogi\\new");
+		System.out.println("\nAfter adding folder: ");
+		dir.returnValues();
+		
+		
+		dir.readFile(dir, "src\\files1\\data\\sonali\\yogi\\y.txt");
+		System.out.println("\nAfter reading folder: ");
+		//dirTemp.returnValues();
+		
+		System.out.println(dir.isDirReadLocked.get("src\\files1\\data"));
+		System.out.println(dir.isDirReadLocked.get("src\\files1\\data\\sonali"));
+		System.out.println(dir.isDirReadLocked.get("src\\files1\\data\\sonali\\yogi"));
+		System.out.println(dir.isFileReadLocked.get("src\\files1\\data\\sonali\\yogi\\y.txt"));
+		
+		
+		System.out.println(dir.isDirReadLocked.get("src\\files1\\data\\manas"));
+		System.out.println(dir.isFileReadLocked.get("src\\files1\\data\\manas\\pradeep"));
+		System.out.println("Final Version value is:- "+dir.getVersion());
+		
+
+		
+		
+		/*if("src\\files1\\data\\sonali\\yogi\\new\\n.txt".indexOf("src\\files1\\data") > -1)
+			System.out.println("Contains sub string"+"src\\files1\\data\\sonali\\yogi\\new\\n.txt".indexOf("src\\files1\\data"));
+		else
+			System.out.println("Does not contains sub string"+"src\\files1\\data\\sonali\\yogi\\new\\n.txt".indexOf("src\\files1\\data"));
+		
+		if("src\\files1\\data\\sonali\\yogi\\new\\n.txt".indexOf("src\\files1\\data\\manas\\pradeep\\p.txt") > -1)
+			System.out.println("Contains sub string");
+		else
+			System.out.println("Does not contains sub string"+"src\\files1\\data\\sonali\\yogi\\new\\n.txt".indexOf("src\\files1\\data\\manas\\pradeep\\p.txt"));*/
 		
 		/*dirTemp = dirTemp.deleteFile(dirTemp, "src\\files1\\data\\manas\\pradeep\\p.txt");
 		System.out.println("\nAfter deleting file: ");
