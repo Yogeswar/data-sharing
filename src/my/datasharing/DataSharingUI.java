@@ -10,16 +10,45 @@
  */
 
 package my.datasharing;
+import DataManager.*;
+import FileSplitter.*;
+import comm.*;
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Sonu
  */
-public class DataSharingUI extends javax.swing.JFrame {
+public class DataSharingUI extends javax.swing.JFrame implements DataListener, MsgAction{
+    //Server Id
+    static private String SERVER_IP = "192.168.0.22";
 
     /** Creates new form DataSharingUI */
     public DataSharingUI() {
         initComponents();
+        String myId = JOptionPane.showInputDialog(new JEditorPane(), "Please Enter Your Id : ", "Group Size", JOptionPane.QUESTION_MESSAGE);
+        if(myId == null) {
+            myId = new Integer(new Random().nextInt()).toString();
+        }
+        try {
+            this.selfNode = new Node(myId, InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        }
+        this.dataManager = new DataManager(this, selfNode);
+        this.builder = new MessageBuilder();
+        this.parser = new MessageParser();
+        this.parser.addActionProvider(this);
+        this.builder.registerServer(selfNode.getIp());
+        
     }
 
     /** This method is called from within the constructor to
@@ -43,7 +72,7 @@ public class DataSharingUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         removeFile = new javax.swing.JButton();
-        addDirectoryComboBox = new javax.swing.JComboBoxFile();
+        addDirectoryComboBox = new javax.swing.JComboBox<File>();
         addFileComboBox = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -133,9 +162,8 @@ public class DataSharingUI extends javax.swing.JFrame {
                                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(23, 23, 23)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addDirectoryComboBox, 0, 151, Short.MAX_VALUE)
-                                    .addComponent(addFileComboBox, 0, 151, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(addDirectoryComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(addFileComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(85, 85, 85)
@@ -145,7 +173,7 @@ public class DataSharingUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(listOfFilesDownloadComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(listOfDirectionDownloadComboBox, 0, 140, Short.MAX_VALUE)))
+                                    .addComponent(listOfDirectionDownloadComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(131, 131, 131)
                                 .addComponent(download, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -242,11 +270,12 @@ public class DataSharingUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:   
     }//GEN-LAST:event_addFileActionPerformed
 
     private void removeDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeDirectoryActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_removeDirectoryActionPerformed
 
     private void removeFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeFileActionPerformed
@@ -255,6 +284,19 @@ public class DataSharingUI extends javax.swing.JFrame {
 
     private void addDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDirectoryActionPerformed
             // TODO add your handling code here:
+         JFileChooser chooser = new JFileChooser();
+//        if(chooserPath != null)
+//        {
+//            chooser.setCurrentDirectory(new File(chooserPath));
+//        }
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);	
+        chooser.setAcceptAllFileFilterUsed(false);
+        int retcode = chooser.showOpenDialog(new JEditorPane());
+        if (retcode == JFileChooser.APPROVE_OPTION) 
+        {
+            File selected = chooser.getSelectedFile();            
+            dataManager.addDir(selected.getPath());
+        }
 
     }//GEN-LAST:event_addDirectoryActionPerformed
 
@@ -270,6 +312,18 @@ public class DataSharingUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addFileComboBoxActionPerformed
 
+    public void requestDataUpdate(){
+        
+    }
+    
+    public void requestLock(String request){
+        
+    }
+    
+    public void returnLockRequest(String request){
+        
+    }
+    
     /**
     * @param args the command line arguments
     */
@@ -281,9 +335,15 @@ public class DataSharingUI extends javax.swing.JFrame {
         });
     }
 
+    private DataManager dataManager;
+    private MessageBuilder builder;
+    private MessageParser parser;
+    private Node selfNode;
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addDirectory;
-    private javax.swing.JComboBoxFile addDirectoryComboBox;
+    private javax.swing.JComboBox<File> addDirectoryComboBox;
     private javax.swing.JButton addFile;
     private javax.swing.JComboBox addFileComboBox;
     private javax.swing.JButton download;
