@@ -16,12 +16,17 @@ import comm.*;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 
 /**
  *
@@ -72,7 +77,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         removeFile = new javax.swing.JButton();
-        addDirectoryComboBox = new javax.swing.JComboBox<File>();
+        addDirectoryComboBox = new javax.swing.JComboBox();
         addFileComboBox = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -295,7 +300,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         if (retcode == JFileChooser.APPROVE_OPTION) 
         {
             File selected = chooser.getSelectedFile();            
-            dataManager.addDir(selected.getPath());
+            this.setAddDirectoryComboBox(dataManager.addDir(selected.getPath()));
         }
 
     }//GEN-LAST:event_addDirectoryActionPerformed
@@ -323,6 +328,59 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     public void returnLockRequest(String request){
         
     }
+
+    public Node getSelfNode() {
+        return selfNode;
+    }
+
+    public void setSelfNode(Node selfNode) {
+        this.selfNode = selfNode;
+    }
+
+    public JComboBox getAddDirectoryComboBox() {
+        return addDirectoryComboBox;
+    }
+
+    public void setAddDirectoryComboBox(List<String> dir) {
+            System.out.println(dir.size());
+            String dirArray[] = dir.toArray(new String[dir.size()]);
+            ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
+            this.addDirectoryComboBox.setModel(AddDir);
+    }
+
+    public JComboBox getAddFileComboBox() {
+        return addFileComboBox;
+    }
+
+    public void setAddFileComboBox(JComboBox addFileComboBox) {
+        this.addFileComboBox = addFileComboBox;
+    }
+
+    public JProgressBar getjProgressBar1() {
+        return jProgressBar1;
+    }
+
+    public void setjProgressBar1(JProgressBar jProgressBar1) {
+        this.jProgressBar1 = jProgressBar1;
+    }
+
+    public JComboBox getListOfDirectionDownloadComboBox() {
+        return listOfDirectionDownloadComboBox;
+    }
+
+    public void setListOfDirectionDownloadComboBox(JComboBox listOfDirectionDownloadComboBox) {
+        this.listOfDirectionDownloadComboBox = listOfDirectionDownloadComboBox;
+    }
+
+    public JComboBox getListOfFilesDownloadComboBox() {
+        return listOfFilesDownloadComboBox;
+    }
+
+    public void setListOfFilesDownloadComboBox(JComboBox listOfFilesDownloadComboBox) {
+        this.listOfFilesDownloadComboBox = listOfFilesDownloadComboBox;
+    }
+    
+
     
     /**
     * @param args the command line arguments
@@ -343,7 +401,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addDirectory;
-    private javax.swing.JComboBox<File> addDirectoryComboBox;
+    private javax.swing.JComboBox addDirectoryComboBox;
     private javax.swing.JButton addFile;
     private javax.swing.JComboBox addFileComboBox;
     private javax.swing.JButton download;
