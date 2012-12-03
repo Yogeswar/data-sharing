@@ -13,10 +13,12 @@ package my.datasharing;
 import DataManager.*;
 import FileSplitter.*;
 import comm.*;
+import dataHandler.Directory;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -317,16 +319,46 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         // TODO add your handling code here:
     }//GEN-LAST:event_addFileComboBoxActionPerformed
 
+    public void revieveUpdate(Map<String, Node> timeStamp, Map<String, Directory> recvData){
+        this.nodes = timeStamp;
+        this.setListOfDirectionDownloadComboBox(this.dataManager.recieveUpdate(timeStamp, recvData));
+    }
+    
     public void requestDataUpdate(){
-        
+         for (Map.Entry<String,Node> entry : this.timeStamp.entrySet()) {
+            String key = entry.getKey();
+            Node node = entry.getValue();
+            this.builder.reqDataUpdate(node.getIp());
+        }
     }
     
     public void requestLock(String request){
-        
+         for (Map.Entry<String,Node> entry : this.timeStamp.entrySet()) {
+            String key = entry.getKey();
+            Node node = entry.getValue();
+            this.builder.reqLock(node.getIp(), request);
+        }       
     }
-    
-    public void returnLockRequest(String request){
+
+        public void IpUpdate(Map<String, Node> timestamp, String recvIp){
+            this.timeStamp = timestamp;
+        }
         
+        public void ReqDataUpdate(String recvIp){
+            this.builder.dataUpdate(recvIp, this.dataManager.getDataUpdate());
+        }
+        
+        public void ReqLock(String recvIp, String request){}
+        public void ReqFileDetails(String recvIp, String request){}
+        public void ReqFileBlock(String recvIp, String request, int blockId){}
+        public void DataUpdate(String recvIp, Map<String, Directory> data){}
+        public void AckLock(String recvIp, String request){}
+        public void FileDetails(String recvIp, String request){}
+        public void FileBlock(String recvIp, String request){}
+
+    
+    public void returnLockRequest(String request, String ip){
+        this.builder.ackLock(ip);
     }
 
     public Node getSelfNode() {
@@ -352,8 +384,11 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         return addFileComboBox;
     }
 
-    public void setAddFileComboBox(JComboBox addFileComboBox) {
-        this.addFileComboBox = addFileComboBox;
+    public void setAddFileComboBox(List<String> dir) {
+            System.out.println(dir.size());
+            String dirArray[] = dir.toArray(new String[dir.size()]);
+            ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
+            this.addDirectoryComboBox.setModel(AddDir);
     }
 
     public JProgressBar getjProgressBar1() {
@@ -368,16 +403,22 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         return listOfDirectionDownloadComboBox;
     }
 
-    public void setListOfDirectionDownloadComboBox(JComboBox listOfDirectionDownloadComboBox) {
-        this.listOfDirectionDownloadComboBox = listOfDirectionDownloadComboBox;
+    public void setListOfDirectionDownloadComboBox(List<String> dir) {
+            System.out.println(dir.size());
+            String dirArray[] = dir.toArray(new String[dir.size()]);
+            ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
+            this.addDirectoryComboBox.setModel(AddDir);
     }
 
     public JComboBox getListOfFilesDownloadComboBox() {
         return listOfFilesDownloadComboBox;
     }
 
-    public void setListOfFilesDownloadComboBox(JComboBox listOfFilesDownloadComboBox) {
-        this.listOfFilesDownloadComboBox = listOfFilesDownloadComboBox;
+    public void setListOfFilesDownloadComboBox(List<String> dir) {
+            System.out.println(dir.size());
+            String dirArray[] = dir.toArray(new String[dir.size()]);
+            ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
+            this.addDirectoryComboBox.setModel(AddDir);
     }
     
 
@@ -397,6 +438,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     private MessageBuilder builder;
     private MessageParser parser;
     private Node selfNode;
+    private Map<String, Node> timeStamp;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

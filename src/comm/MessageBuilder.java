@@ -78,7 +78,7 @@ public class MessageBuilder
             new MyClient(this.data, ip, 5001);	//Send message using client
         }
         
-        public void reqLock(String ip){
+        public void reqLock(String ip, String request){
             data = new byte[1];
             data[0] = MessageBuilder.CMD_REQ_LOCK;	//Append message type to the data 
             new MyClient(this.data, ip, 5001);	//Send message using client
@@ -103,7 +103,7 @@ public class MessageBuilder
             
         }
         
-        public void dataUpdate(String ip){
+        public void dataUpdate(String ip, Object[] obj){
             data = new byte[1];
             data[0] = MessageBuilder.CMD_DATA_UPDATE;	//Append message type to the data 
             new MyClient(this.data, ip, 5001);	//Send message using client
