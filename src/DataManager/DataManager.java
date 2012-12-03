@@ -35,13 +35,14 @@ public class DataManager {
         listener.requestDataUpdate();
     }
     
-    public void addDir(String pathName){
+    public List<String> addDir(String pathName){
         if(data.get(this.selfTimeStamp.getIp()) != null){           
             data.get(this.selfTimeStamp.getId()).addDirectory(data.get(this.selfTimeStamp.getId()), pathName);        
         } else {
             data.put(this.selfTimeStamp.getId(), new Directory(pathName));
         }
         data.get(this.selfTimeStamp.getId()).returnValues();
+        return data.get(this.selfTimeStamp.getId()).finalDirectory;
         
     }
     
@@ -52,7 +53,7 @@ public class DataManager {
             String key = entry.getKey();
             Directory recvdir = entry.getValue();
             Directory dir = this.data.get(key);
-            if(dir.getVersion() < recvDir.getVersion()){
+            if(dir.getVersion() < recvdir.getVersion()){
                 this.data.put(key, recvdir);
             }
         }
@@ -63,9 +64,9 @@ public class DataManager {
         this.directory.setWrite(true);
     }
     
-    public boolean lockRequested(String pathName, String ip){
-        if(this.directory.isLocked(pathName)){
-            this.requestList.add(ip);
+    public boolean lockRequested(String pathName, String id){
+        if(this.directory.isRead()){
+            this.requestList.add(id);
             return false;
         }
         return true;                

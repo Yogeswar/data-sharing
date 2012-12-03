@@ -34,7 +34,7 @@ public class Directory {
 	
 	
 	// To save the final Directory structure after add or removal
-	List<Directory> finalDirectory = new ArrayList<Directory>();
+	public List<String> finalDirectory = new ArrayList<String>();
 	
 	// to check whether the file is readLocked or not by passing pathname of File. If value returned is 0, status of file is  unlocked , if 1 it is locked
 	public TreeMap<String, Integer> isFileReadLocked = new TreeMap<String, Integer>();
@@ -105,6 +105,7 @@ public class Directory {
 		this.isDirReadLocked.put(pathname, 0); // adding directory with status as unlocked i.e value 0.
 		this.setDateCreated(dateFormat.format(date));
 		this.setDirectoryName(pathname);
+                this.finalDirectory.add(pathname);
 		for ( int i = 0 ; i < size ; i ++ ) {
 			if ( strFilesDirs[i].isDirectory ( ) ) {
 				//System.out.println ( "Directory is: " + strFilesDirs[i] ) ;
@@ -132,7 +133,7 @@ public class Directory {
 		for (String temp : childDirectories){
 			saveDirInfo(temp);
 		}*/
-		finalDirectory.add(this);
+		
 		
 	}
 	
