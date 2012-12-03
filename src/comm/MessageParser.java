@@ -77,7 +77,7 @@ public class MessageParser implements ServerListener
 			case MessageParser.CMD_IP_UPDATE:
 				this.parseIpUpdate();
 				break;
-			case MessageParser.CMD_REQ_DATA_UPDATE:
+			case MessageParser.CMD_REQ_DATA_UPDATE:    //Time Stamp & Data Update
 				this.parseReqDataUpdate();
 				break;
 			case MessageParser.CMD_REQ_LOCK:
@@ -86,7 +86,7 @@ public class MessageParser implements ServerListener
 			case MessageParser.CMD_REQ_FILE_DETAILS:
 				this.parseReqFileDetails();
 				break;
-			case MessageParser.CMD_REQ_FILE_BLOCK:
+			case MessageParser.CMD_REQ_FILE_BLOCK:       
 				this.parseReqFileBlock();
 				break;
 			case MessageParser.CMD_DATA_UPDATE:

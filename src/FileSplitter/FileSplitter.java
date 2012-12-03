@@ -38,7 +38,7 @@ public class FileSplitter {
     while ( totalBytesRead < FILE_SIZE )
     {
      String PART_NAME;
-      PART_NAME = fm.getFileName()+NUMBER_OF_CHUNKS+".bin";
+      PART_NAME = fm.getFileName(path)+NUMBER_OF_CHUNKS+".bin";
      int bytesRemaining = FILE_SIZE-totalBytesRead;
      if ( bytesRemaining < CHUNK_SIZE ) // Remaining Data Part is Smaller Than CHUNK_SIZE
                 // CHUNK_SIZE is assigned to remain volume
