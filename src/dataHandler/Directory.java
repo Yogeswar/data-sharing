@@ -21,8 +21,6 @@ import java.util.TreeMap;
  */
 public class Directory {
 	
-	
-	
 	/*
 	 * Map contains the key as the pathname of the directory and value as the Directory Object with all child directories and files information.
 	 */
@@ -32,12 +30,17 @@ public class Directory {
 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	Date date = new Date();
 	
+	int version = 0;
+	
 	
 	// To save the final Directory structure after add or removal
 	List<Directory> finalDirectory = new ArrayList<Directory>();
 	
+	// to check whether the file is readLocked or not by passing pathname of File. If value returned is 0, status of file is  unlocked , if 1 it is locked
+	public TreeMap<String, Integer> isFileReadLocked = new TreeMap<String, Integer>();
 	
-	//List <TreeMap<Directory, Integer>> finalDirectory = new ArrayList<TreeMap<Directory, Integer>>();
+	// to check whether the directory is readLocked or not by passing pathname of Directory. If value returned is 0, status of directory is unlocked , if 1 it is locked
+	public TreeMap<String, Integer> isDirReadLocked = new TreeMap<String, Integer>();
 	
 	
 
@@ -97,8 +100,9 @@ public class Directory {
 		
 		ArrayList<Directory> tempSubDirectories = new ArrayList<Directory>(); // temporary arraylist to save sub directories names
 		ArrayList<String> tempSubFiles = new ArrayList<String>(); // temporary arraylist to save sub files names
-		
+		version++;
 		this.setDirectoryPath(pathname);
+		this.isDirReadLocked.put(pathname, 0); // adding directory with status as unlocked i.e value 0.
 		this.setDateCreated(dateFormat.format(date));
 		this.setDirectoryName(pathname);
 		for ( int i = 0 ; i < size ; i ++ ) {
@@ -114,6 +118,7 @@ public class Directory {
 				//System.out.println ( "File is : " + strFilesDirs[i] ) ;
 				//tempDir.setSubFilePath(strFilesDirs[i].toString());
 				//tempDir.setSubFileName(strFilesDirs[i].toString());
+				this.isFileReadLocked.put(strFilesDirs[i].toString(), 0); // adding file with status as unlocked i.e value 0.
 				this.setSubFileName(strFilesDirs[i].toString());
 				tempSubFiles.add(strFilesDirs[i].toString());
 			}
@@ -171,6 +176,7 @@ public class Directory {
 	 */
 	public Directory deleteDirectory(Directory dir, String dirPathname){
 		// create virtual directory as top level directory which will have root directory in order to delete root directory
+		this.setVersion(version++);
 		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
 		while(itr.hasNext()){
 			Directory tempDir = itr.next();
@@ -234,6 +240,7 @@ public class Directory {
 			System.out.println("Directory path-----------------"+tempDir.getDirectoryPath());
 			System.out.println("parent directory is:"+parentDir);
 			if(parentDir.trim().equals(tempDir.getDirectoryPath())){ // the directory under which the directory needs to be added (parent directory)
+				version++;
 				dir.subDirectoriesPath.remove(count); // remove the parent directory from the original structure
 				tempDir.subDirectoriesPath.add(new Directory(dirPathname)); // add the new child directory inside the temporary parent directory
 				dir.subDirectoriesPath.add(count, tempDir); // add the temporary parent directory in the original structure
@@ -263,7 +270,8 @@ public class Directory {
 			while(itrTemp.hasNext()){ // for each file in given directory
 				String tempFileName = itrTemp.next().trim();
 				System.out.println("tempFileName -----"+tempFileName);
-				if(filePathname.trim().equals(tempFileName)){
+				if(filePathname.trim().equals(tempFileName)){ // if file is found in sub directory of Directory passed 
+					version++;
 					System.out.println("Inside file searching file:- "+filePathname);
 					itrTemp.remove();	
 					return dir; // if file is found in sub directory of Directory passed (i.e dir here) than remove file from current directory and pass dir.
@@ -337,6 +345,7 @@ public class Directory {
 			System.out.println("Directory path-----------------"+tempDir.getDirectoryPath());
 			System.out.println("parent directory is:"+parentDir);
 			if(parentDir.trim().equals(tempDir.getDirectoryPath())){ // the directory under which the directory needs to be added (parent directory)
+				version++;
 				dir.subDirectoriesPath.remove(count); // remove the parent directory from the original structure
 				tempDir.subFilesPath.add(filePathname); // add the new child file inside the temporary parent directory
 				dir.subDirectoriesPath.add(count, tempDir); // add the temporary parent directory in the original structure
@@ -347,6 +356,69 @@ public class Directory {
 		}
 		return dir;
 	}
+	
+	
+	
+	
+	
+	/*
+	 * Method to set read lock to the file pathname passed and all its parent directories.
+	 */
+	public Directory readFile(Directory dir, String filePathname){
+		if(filePathname.indexOf(dir.getDirectoryPath()) > -1) {// if the filePathname contains the directory path (i.e it is part of parent hierarchy )
+			System.out.println("Directory pathname:------------------- "+dir.getDirectoryPath());
+			isDirReadLocked.put(dir.getDirectoryPath(),1); // read lock the parent Directory
+		}
+		
+		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
+		//System.out.println("File path:- "+filePathname);
+		
+		while(itr.hasNext()){ // for each directory
+			Directory tempDir = itr.next();
+			Iterator<String> itrTemp = tempDir.getSubFilesPath().iterator(); // to iterate all files in the current directory
+			
+			while(itrTemp.hasNext()){ // for each file in given directory
+				String tempFileName = itrTemp.next().trim();
+				if(filePathname.trim().equals(tempFileName)){
+					System.out.println("Directory pathname:----------------------- "+tempDir.getDirectoryPath());
+					System.out.println("File pathname:---------------------------- "+tempFileName);
+					isDirReadLocked.put(tempDir.getDirectoryPath(),1); // read lock the immediate parent directory of the file searched
+					isFileReadLocked.put(tempFileName, 1); // read lock the file searched
+					version++;
+					System.out.println("Inside file searching file:- "+filePathname);
+					return dir; // if file is found in sub directory of Directory passed (i.e dir here) than remove file from current directory and pass dir.
+				}
+			}
+			readFile(tempDir, filePathname);  // if not found pass the sub directory and check in sub directory for file pathname.
+		}
+		return dir;
+	}
+	
+	
+	
+	
+	/*
+	 * Method to set read lock to the directory pathname passed and all its parent directories.
+	 
+	public Directory readDirectory(Directory dir, String dirPathname){
+		if(dirPathname.indexOf(dir.getDirectoryPath()) > -1) // if the filePathname contains the directory path (i.e it is part of parent hierarchy )
+			dir.isDirReadLocked.put(dir.getDirectoryPath(),1); // read lock the parent Directory
+		
+		
+		Iterator<Directory> itr = dir.subDirectoriesPath.iterator();
+		while(itr.hasNext()){
+			Directory tempDir = itr.next();
+			//System.out.println("Directory path----------------- "+tempDir.getDirectoryPath());
+			if(dirPathname.equals(tempDir.getDirectoryPath())){
+				//System.out.println("Inside Dir");
+				itr.remove();
+				return dir; // if found in sub directory of Directory passed (i.e dir here) than remove sub directory from current directory and pass dir.
+			}else{
+				deleteDirectory(tempDir, dirPathname); // else pass the sub directory and check in sub directory for dir pathname.
+			}
+		}
+		return dir;
+	}*/
 	
 	
 	
@@ -558,4 +630,17 @@ public class Directory {
 		this.dateCreated = string;
 	}
 
+	/**
+	 * @return the version
+	 */
+	public int getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version the version to set
+	 */
+	public void setVersion(int version) {
+		this.version = version;
+	}
 }
