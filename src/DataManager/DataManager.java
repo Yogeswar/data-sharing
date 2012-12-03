@@ -19,6 +19,7 @@ public class DataManager {
     Node selfTimeStamp;
     Queue<String> requestList = new LinkedList<String>();
     Map<String, Directory> data = new HashMap<String, Directory>();
+    Map<String, Integer> ackToRecieve = new HashMap<String, Node>;
         
     public void addDataListener(DataListener dl){
         this.listener = dl;
@@ -72,11 +73,12 @@ public class DataManager {
     public void requestLock(String pathName){
         this.listener.requestLock(pathName);
         this.directory.setWrite(true);
+        this.ackToRecieve.put(pathName, this.timeStamp.size());
     }
     
-    public boolean lockRequested(String pathName, String id){
-        if(this.directory.isRead()){
-            this.requestList.add(id);
+    public boolean lockRequested(String pathName, String ip){
+        if(this.directory.isFileReadLocked.get(pathName) == 1){
+            this.requestList.add(ip);
             return false;
         }
         return true;                
@@ -94,6 +96,15 @@ public class DataManager {
                 currentNode.setLogicalTimestamp(node.getLogicalTimestamp());
             }            
         }
+   }
+    
+   public void lockAck(String ip, String request){
+       int temp = (this.ackToRecieve.get(request).intValue())-1;              
+       if(temp == 0){
+           this.listener.locked(request);
+       } else {
+           this.ackToRecieve.put(request, new Integer(temp));
+       }
    }
     
     
