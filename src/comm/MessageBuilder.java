@@ -70,6 +70,7 @@ public class MessageBuilder
         public void reqStatusUpdate(String ip){
             data = new byte[1];
             data[0] = MessageBuilder.CMD_REQ_IP_UPDATE;	//Append message type to the data 
+            
             new MyClient(this.data, ip, 5001);	//Send message using client
         }
         
@@ -123,7 +124,7 @@ public class MessageBuilder
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	        byte[] buf = new byte[1024];
 	        for (int readNum; (readNum = fis.read(buf)) != -1;) {
-                bos.write(buf, 0, readNum); 
+                    bos.write(buf, 0, readNum); 
 	        }
 	        byte[] mainData = bos.toByteArray();
 	        data = new byte[mainData.length + 1];
@@ -132,8 +133,7 @@ public class MessageBuilder
 			this.sendMessage(ip);	//Send message using client
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-                        
+			e.printStackTrace();                        
                 }            
         }
         

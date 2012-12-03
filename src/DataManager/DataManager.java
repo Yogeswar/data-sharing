@@ -19,7 +19,7 @@ public class DataManager {
     Node selfTimeStamp;
     Queue<String> requestList = new LinkedList<String>();
     Map<String, Directory> data = new HashMap<String, Directory>();
-    Map<String, Integer> ackToRecieve = new HashMap<String, Node>;
+    Map<String, Integer> ackToRecieve = new HashMap<String, Integer>();
         
     public void addDataListener(DataListener dl){
         this.listener = dl;
@@ -50,8 +50,7 @@ public class DataManager {
             data.put(this.selfTimeStamp.getId(), new Directory(pathName));
         }
         data.get(this.selfTimeStamp.getId()).returnValues();
-        return data.get(this.selfTimeStamp.getId()).finalDirectory;
-        
+        return data.get(this.selfTimeStamp.getId()).finalDirectory;        
     }
     
     
@@ -72,7 +71,7 @@ public class DataManager {
     
     public void requestLock(String pathName){
         this.listener.requestLock(pathName);
-        this.directory.setWrite(true);
+        this.directory.readFile(this.directory, pathName);
         this.ackToRecieve.put(pathName, this.timeStamp.size());
     }
     
