@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.security.Key;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -111,38 +113,45 @@ public class MessageParser implements ServerListener
 	}
         
         private void parseReqDataUpdate(){
+            System.out.println("ReqDataUpdate");
             this.action.ReqDataUpdate(recvIP);
         }
         
         private void parseReqFileDetails(){
+            System.out.println("ReqFileDetails");
             conv = new Convert();
             String pathName = (String) conv.toObject(this.data);
             this.action.ReqFileDetails(recvIP, pathName);
         }
         
         private void parseReqLock(){
+            System.out.println("ReqLock");
             conv = new Convert();
             String pathName = (String) conv.toObject(this.data);
             this.action.ReqLock(recvIP, pathName);            
         }
         
         private void parseReqFileBlock(){
+            System.out.println("ReqFileBlock");
             
         }
         
         private void parseFileDetails(){
+            System.out.println("FileDetails");
             conv = new Convert();
             FileHeader fh = (FileHeader) conv.toObject(this.data);
             this.action.FileDetails(recvIP, fh);
         }
         
         private void parseAckLock(){
+            System.out.println("AckLock");
             conv = new Convert();
             String pathName = (String) conv.toObject(this.data);
             this.action.AckLock(recvIP, pathName);                        
         }
         
         private void parseDataUpdate(){
+            System.out.println("DataUpdate");
             conv = new Convert();
             Object[] obj = (Object[]) conv.toObject(this.data);
             this.action.DataUpdate(recvIP, obj);            
@@ -152,6 +161,7 @@ public class MessageParser implements ServerListener
 	//Store recorded contents to a file
 	private void parseFileBlock() 
 	{
+            System.out.println("FileBlock");
 		// TODO Auto-generated method stub
 		String filename = recvIP + ".bin";
 		File inFile = new File(filename);	//Create a file to save recorded data
@@ -187,11 +197,20 @@ public class MessageParser implements ServerListener
 	@SuppressWarnings("unchecked")
 	private void parseIpUpdate()
 	{
+            System.out.println("IpUpdate");
 		try 
 		{
 		    ByteArrayInputStream bis = new ByteArrayInputStream(this.data,0,this.data.length);
 		    ObjectInputStream ois = new ObjectInputStream (bis);
-		    iptable = (Map<String, Node>) ois.readObject();	//Read the object into iptable
+                    List<Node> temp = (List<Node>) ois.readObject();
+		    iptable = new HashMap<String, Node>();
+                    Iterator<Node> iterator = temp.iterator();
+                    Node tempNode;
+                    while(iterator.hasNext())
+                    {
+                        tempNode = iterator.next();
+                            iptable.put(tempNode.getId(), tempNode);                            
+                    }
 		    this.action.IpUpdate(iptable, this.recvIP);	//Update the client details at the IP table
 		} 
 		catch(Exception e)

@@ -110,8 +110,14 @@ public class DataManager {
    public void lockAck(String ip, String request){
        int temp = (this.ackToRecieve.get(request).intValue())-1;              
        if(temp == 0){
+            for (Map.Entry<String,Directory> entry : data.entrySet()) {
+                String key = entry.getKey();
+                Directory dir = entry.getValue();
+                if(dir.isFilePresent(request)){
+                    this.listener.locked(this.timeStamp.get(key).getIp(), request);
+                }
+            }           
            
-           this.listener.locked(request);
        } else {
            this.ackToRecieve.put(request, new Integer(temp));
        }

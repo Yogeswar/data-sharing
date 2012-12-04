@@ -45,6 +45,7 @@ public class MessageBuilder
 	//Register the client details at the Server
 	public void registerServer(Node node, String ip)
 	{
+            System.out.println("registerServer");
 		byte[] mainData = conv.toByteArray(node);
 		data = new byte[mainData.length + 1];
 		data[0] = CMD_REGISTER;			//Append message type to the data
@@ -53,6 +54,7 @@ public class MessageBuilder
 	}
 	
         public void reqStatusUpdate(String ip){
+            System.out.println("reqStatusUpdate");
             data = new byte[1];
             data[0] = MessageBuilder.CMD_REQ_IP_UPDATE;	//Append message type to the data 
             
@@ -60,12 +62,14 @@ public class MessageBuilder
         }
         
         public void reqDataUpdate(String ip){
+            System.out.println("reqDataUpdate");
             data = new byte[1];
             data[0] = MessageBuilder.CMD_REQ_DATA_UPDATE;	//Append message type to the data 
             new MyClient(this.data, ip, 5001);	//Send message using client
         }
         
         public void reqLock(String ip, String request){
+            System.out.println("reqLock");
             byte[] mainData = conv.toByteArray(request);
             data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_REQ_LOCK;	//Append message type to the data 
@@ -74,6 +78,7 @@ public class MessageBuilder
         }
         
         public void reqFile(String ip, String pathName){
+            System.out.println("reqFile");
             byte[] mainData = conv.toByteArray(pathName);
             data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_REQ_FILE_DETAILS;	//Append message type to the data 
@@ -82,13 +87,14 @@ public class MessageBuilder
         }
         
         public void reqBlock(String ip, int blockId){
-            
+            System.out.println("reqBlock");
             data = new byte[1];
             data[0] = MessageBuilder.CMD_REQ_FILE_BLOCK;	//Append message type to the data 
             new MyClient(this.data, ip, 5001);	//Send message using client
         }
         
         public void ackLock(String ip, String request){
+            System.out.println("ackLock");
             byte[] mainData = conv.toByteArray(request);
             data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_ACK_LOCK;	//Append message type to the data 
@@ -97,6 +103,7 @@ public class MessageBuilder
         }
         
         public void dataUpdate(String ip, Object obj){
+            System.out.println("dataUpdate");
             byte[] mainData = conv.toByteArray(obj);
             data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_DATA_UPDATE;	//Append message type to the data 
@@ -105,6 +112,7 @@ public class MessageBuilder
         }
         
         public void fileDetails(String ip, FileHeader fh){
+            System.out.println("fileDetails");
             byte[] mainData = conv.toByteArray(fh);
             data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_FILE_DETAILS;	//Append message type to the data 
@@ -113,6 +121,7 @@ public class MessageBuilder
         }
         
         public void fileBlock(String ip, Object file){
+            System.out.println("fileBlock");
 		FileInputStream fis;
 		try {
 			fis = new FileInputStream((File) file);
@@ -133,6 +142,7 @@ public class MessageBuilder
         }
         
         public void amHere(String ip){
+            System.out.println("amHere");
                 data = new byte[1];
 		data[0] = MessageBuilder.CMD_AM_HERE;	//Append message type to the data 
 		new MyClient(this.data, ip, 5001);	//Send message using client
@@ -142,6 +152,7 @@ public class MessageBuilder
 	//Disconnect client from server
 	public void disconnect(String ip)
 	{
+            System.out.println("disconnect");
 		data = new byte[1];
 		data[0] = MessageBuilder.CMD_DISCONNECT;	//Append message type to the data 
 		new MyClient(this.data, ip, 5001);	//Send message using client
