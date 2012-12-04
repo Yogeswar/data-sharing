@@ -18,14 +18,18 @@ public class MyClient
 		try
 		{
 		
-			soc = new Socket(ip,port);	// server is listening on this port		
+			soc = new Socket(ip,port);	// server is listening on this port
+                        System.out.print(ip);
+                        System.out.println(port);
 			toserver=new BufferedOutputStream(soc.getOutputStream());
 			toserver.write(buf, 0, buf.length);	//Write data onto the socket
 			toserver.close();
+                        soc.close();
 			
 		}
 		catch(Exception ex)
 		{
+                    ex.printStackTrace();
 			System.out.println("Error in the MyClient : " + ex.toString());
 		}
 	}
