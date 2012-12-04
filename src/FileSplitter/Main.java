@@ -2,6 +2,8 @@ package FileSplitter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +15,12 @@ public class Main {
 	public static void main(String args[]){
             	String path="C://Users/manas/Downloads/Programming interviews exposed.pdf";
 		FileSplitter fs=new FileSplitter();
-                FileManager fm = new FileManager(path);
+                FileManager fm = new FileManager();
+                
+                FileChunk fc= new FileChunk();
+        
+           // fc.fileObj("Programming interviews exposed", 2);
+        
                 
 		   // If File Name is Crack.pdf , It will Return Crack
 		String name=fm.getFileName(path);                        
