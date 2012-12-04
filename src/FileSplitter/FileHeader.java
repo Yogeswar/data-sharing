@@ -18,7 +18,7 @@ public class FileHeader {
     
     public FileHeader fileValues (String filePathName){
     	FileHeader fileHeader = new FileHeader();
-    	FileManager fileManager = new FileManager();
+    	FileManager fileManager =new FileManager();
     	
     	fileHeader.setFileExtension(fileManager.getFileExtension(filePathName));
     	fileHeader.setFileName(fileManager.getFileName(filePathName));
@@ -82,7 +82,5 @@ public class FileHeader {
     public void setNumberofChunks(int numberofChunks) {
         this.numberofChunks = numberofChunks;
     }
-
-    
     
 }

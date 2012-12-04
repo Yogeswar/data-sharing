@@ -4,6 +4,9 @@
  */
 package FileSplitter;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  *
  * @author manas
@@ -11,7 +14,7 @@ package FileSplitter;
 public class FileChunk {
         private FileHeader fh;
         private int chunkNumber;
-        private char[] chunksize =new char[512];
+        
 
     /**
      * @return the chunkNumber
@@ -27,18 +30,9 @@ public class FileChunk {
         this.chunkNumber = chunkNumber;
     }
 
-    /**
-     * @return the chunksize
-     */
-    public char[] getChunksize() {
-        return chunksize;
-    }
-
-    /**
-     * @param chunksize the chunksize to set
-     */
-    public void setChunksize(char[] chunksize) {
-        this.chunksize = chunksize;
+    public ArrayList<String> getPart ( String path, int CHUNK_SIZE ){
+        
+        
     }
         
 }
