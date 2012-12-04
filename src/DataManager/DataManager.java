@@ -105,9 +105,13 @@ public class DataManager {
             String key = entry.getKey();
             Node node = entry.getValue();
             Node currentNode = this.timeStamp.get(key);
-            if(currentNode.isLatest(node.getLogicalTimestamp())){
-                currentNode.setLogicalTimestamp(node.getLogicalTimestamp());
-            }            
+            if(currentNode == null){
+                this.timeStamp.put(key, node);
+            } else {
+                if(currentNode.isLatest(node.getLogicalTimestamp())){
+                    currentNode.setLogicalTimestamp(node.getLogicalTimestamp());
+                }                   
+            }         
         }
    }
     
