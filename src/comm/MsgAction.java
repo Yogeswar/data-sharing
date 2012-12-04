@@ -8,8 +8,6 @@ import java.security.Key;
 import java.util.List;
 import java.util.Map;
 
-import store.storage;
-
 public interface MsgAction 
 {
         public void IpUpdate(Map<String, Node> timestamp, String recvIp);
