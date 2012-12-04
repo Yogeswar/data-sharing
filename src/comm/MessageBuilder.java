@@ -50,7 +50,7 @@ public class MessageBuilder
 		data = new byte[mainData.length + 1];
 		data[0] = CMD_REGISTER;			//Append message type to the data
 		System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
-		new MyClient(this.data, ip, 5000);	//Send data through the client
+		new MyClient(this.data, ip, 5001);	//Send data through the client
 	}
 	
         public void reqStatusUpdate(String ip){
@@ -58,7 +58,7 @@ public class MessageBuilder
             data = new byte[1];
             data[0] = MessageBuilder.CMD_REQ_IP_UPDATE;	//Append message type to the data 
             
-            new MyClient(this.data, ip, 5000);	//Send message using client
+            new MyClient(this.data, ip, 5001);	//Send message using client
         }
         
         public void reqDataUpdate(String ip){
@@ -155,7 +155,7 @@ public class MessageBuilder
             System.out.println("disconnect");
 		data = new byte[1];
 		data[0] = MessageBuilder.CMD_DISCONNECT;	//Append message type to the data 
-		new MyClient(this.data, ip, 5000);	//Send message using client
+		new MyClient(this.data, ip, 5001);	//Send message using client
 	}
 	
 }
