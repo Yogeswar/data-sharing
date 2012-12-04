@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import DataManager.Node;
+import FileSplitter.FileHeader;
 import utils.*;
 
 public class MessageBuilder 
@@ -44,7 +45,7 @@ public class MessageBuilder
 	//Register the client details at the Server
 	public void registerServer(Node node, String ip)
 	{
-		byte[] mainData = conv.toByteArray((Object)node);
+		byte[] mainData = conv.toByteArray(node);
 		data = new byte[mainData.length + 1];
 		data[0] = CMD_REGISTER;			//Append message type to the data
 		System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
@@ -65,40 +66,50 @@ public class MessageBuilder
         }
         
         public void reqLock(String ip, String request){
-            data = new byte[1];
+            byte[] mainData = conv.toByteArray(request);
+            data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_REQ_LOCK;	//Append message type to the data 
-            new MyClient(this.data, ip, 5001);	//Send message using client
+            System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
+            new MyClient(this.data, ip, 5001);	//Send data through the client
         }
         
-        public void reqFile(String ip){
-            data = new byte[1];
+        public void reqFile(String ip, String pathName){
+            byte[] mainData = conv.toByteArray(pathName);
+            data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_REQ_FILE_DETAILS;	//Append message type to the data 
-            new MyClient(this.data, ip, 5001);	//Send message using client
+            System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
+            new MyClient(this.data, ip, 5001);	//Send data through the client
         }
         
-        public void reqBlock(String ip){
+        public void reqBlock(String ip, int blockId){
+            
             data = new byte[1];
             data[0] = MessageBuilder.CMD_REQ_FILE_BLOCK;	//Append message type to the data 
             new MyClient(this.data, ip, 5001);	//Send message using client
         }
         
-        public void ackLock(String ip){
-            data = new byte[1];
+        public void ackLock(String ip, String request){
+            byte[] mainData = conv.toByteArray(request);
+            data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_ACK_LOCK;	//Append message type to the data 
-            new MyClient(this.data, ip, 5001);	//Send message using client
-            
+            System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
+            new MyClient(this.data, ip, 5001);	//Send data through the client                      
         }
         
         public void dataUpdate(String ip, Object obj){
-            data = new byte[1];
+            byte[] mainData = conv.toByteArray(obj);
+            data = new byte[mainData.length + 1];
             data[0] = MessageBuilder.CMD_DATA_UPDATE;	//Append message type to the data 
-            new MyClient(this.data, ip, 5001);	//Send message using client
+            System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
+            new MyClient(this.data, ip, 5001);	//Send data through the client                                              
         }
         
-        public void fileDetails(String ip){
-                data = new byte[1];
-		data[0] = MessageBuilder.CMD_FILE_DETAILS;	//Append message type to the data 
-		new MyClient(this.data, ip, 5001);	//Send message using client
+        public void fileDetails(String ip, FileHeader fh){
+            byte[] mainData = conv.toByteArray(fh);
+            data = new byte[mainData.length + 1];
+            data[0] = MessageBuilder.CMD_FILE_DETAILS;	//Append message type to the data 
+            System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
+            new MyClient(this.data, ip, 5001);	//Send data through the client                                              
         }
         
         public void fileBlock(String ip, Object file){

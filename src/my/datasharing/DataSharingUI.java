@@ -57,6 +57,9 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         this.parser = new MessageParser();
         this.parser.addActionProvider(this);
         this.builder.registerServer(selfNode, SERVER_IP);
+        this.fileHeader = new FileHeader();
+        this.fileManager = new FileManager();
+        this.fileSplitter = new FileSplitter();
         
     }
 
@@ -379,13 +382,15 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
          for (Map.Entry<String,Node> entry : this.timeStamp.entrySet()) {
             String key = entry.getKey();
             Node node = entry.getValue();
-            this.builder.reqLock(node.getIp(), request);
+            if(node.getIp() != this.selfNode.getIp()){
+                this.builder.reqLock(node.getIp(), request);
+            }
         }       
     }
     
-    public void locked(String request){
+    public void locked(String ip, String request){
         //Start Downloading
-        this.builder.reqFile(request);
+        this.builder.reqFile(ip, request);
     }
 
     //parser function calls
@@ -399,12 +404,12 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         
         public void ReqLock(String recvIp, String request){
             if(this.dataManager.lockRequested(request, recvIp)){
-                this.builder.ackLock(recvIp);
+                this.builder.ackLock(recvIp, request);
             }
         }
         
         public void ReqFileDetails(String recvIp, String request){
-            fileManager.get
+            this.builder.fileDetails(recvIp,this.fileHeader.fileValues(request));
         }
         
         public void ReqFileBlock(String recvIp, String request, int blockId){
@@ -419,7 +424,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             this.dataManager.lockAck(recvIp, request);
         }
         
-        public void FileDetails(String recvIp, String request){
+        public void FileDetails(String recvIp, FileHeader fh){
         
         }
         
@@ -429,7 +434,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
 
     
     public void returnLockRequest(String request, String ip){
-        this.builder.ackLock(ip);
+        this.builder.ackLock(ip, request);
     }
 
     public Node getSelfNode() {
@@ -510,8 +515,9 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     private MessageParser parser;
     private Node selfNode;
     private Map<String, Node> timeStamp;
-    private FileManager fileManager;
+    private FileHeader fileHeader;
     private FileSplitter fileSplitter;
+    private FileManager fileManager;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

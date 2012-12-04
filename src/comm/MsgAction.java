@@ -1,6 +1,7 @@
 package comm;
 //Interface to initialize methods executed at the client
 import DataManager.Node;
+import FileSplitter.FileHeader;
 import dataHandler.Directory;
 import java.io.File;
 import java.security.Key;
@@ -18,6 +19,6 @@ public interface MsgAction
         public void ReqFileBlock(String recvIp, String request, int blockId);
         public void DataUpdate(String recvIp, Object[] obj);
         public void AckLock(String recvIp, String request);
-        public void FileDetails(String recvIp, String request);
-        public void FileBlock(String recvIp, String request);	
+        public void FileDetails(String recvIp, FileHeader fh);
+        public void FileBlock(String recvIp, File inFile);	
 }
