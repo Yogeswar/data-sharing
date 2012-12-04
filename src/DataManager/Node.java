@@ -4,11 +4,13 @@
  */
 package DataManager;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Yogi
  */
-public class Node {
+public class Node implements Serializable{
     
     private String ip;
     private String id;

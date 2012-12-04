@@ -53,6 +53,16 @@ public class DataManager {
         return data.get(this.selfTimeStamp.getId()).finalDirectory;        
     }
     
+    public List<String> getAllDir(){
+        List<String> allList = new ArrayList<String>();
+        for (Map.Entry<String,Directory> entry : data.entrySet()) {
+            String key = entry.getKey();
+            Directory dir = entry.getValue();
+            allList.addAll(dir.finalDirectory);            
+        }
+        return allList;
+    }
+    
     
     public List<String> recieveUpdate(Map<String, Node> timeStamp, Map<String, Directory> recvData){
         this.updateTimeStamp(timeStamp);
@@ -105,7 +115,23 @@ public class DataManager {
            this.ackToRecieve.put(request, new Integer(temp));
        }
    }
-    
+   
+   public List<String> getFiles(String pathName){
+       return data.get(this.selfTimeStamp.getId()).filesInDir(data.get(this.selfTimeStamp.getId()), pathName);
+   }
+
+   public List<String> getAllFiles(String pathName){
+       ArrayList<String> fileList = new ArrayList<String>();
+       for (Map.Entry<String,Directory> entry : data.entrySet()) {
+            String key = entry.getKey();
+            Directory dir = entry.getValue();
+            fileList = dir.filesInDir(dir, pathName);
+            if(fileList.size() > 0){
+                return fileList;
+            }
+        } 
+       return fileList;
+   }
     
     
     

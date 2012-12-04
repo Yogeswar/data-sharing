@@ -1,5 +1,6 @@
 package comm;
 //Interpret the message types in data
+import DataManager.Node;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import store.*;
 import utils.Convert;
@@ -16,7 +18,7 @@ public class MessageParser implements ServerListener
 {
 	
 	private byte[] data;
-	private List<storage> iptable; 
+	private Map<String, Node> iptable;
 	private MsgAction action;
 	private Cserver server;
 	private String recvIP;
@@ -178,8 +180,8 @@ public class MessageParser implements ServerListener
 		{
 		    ByteArrayInputStream bis = new ByteArrayInputStream(this.data,0,this.data.length);
 		    ObjectInputStream ois = new ObjectInputStream (bis);
-		    iptable = (List<storage>) ois.readObject();	//Read the object into iptable
-		    this.action.updateClientTable(iptable, this.recvIP);	//Update the client details at the IP table
+		    iptable = (Map<String, Node>) ois.readObject();	//Read the object into iptable
+		    this.action.IpUpdate(iptable, this.recvIP);	//Update the client details at the IP table
 		} 
 		catch(Exception e)
 		{
