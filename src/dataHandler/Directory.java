@@ -20,7 +20,7 @@ import java.util.TreeMap;
  */
 public class Directory implements Serializable{
 	
-	public static final ArrayList<String> finalDirectory = new ArrayList<String>();
+	public ArrayList<String> finalDirectory = new ArrayList<String>();
 	
 	public boolean filePresent = false;
 	/*
@@ -639,7 +639,7 @@ public class Directory implements Serializable{
 	/**
 	 * @return the final directory
 	 */
-	public static ArrayList<String> getFinaldirectory() {
+	public  ArrayList<String> getFinaldirectory() {
 		return finalDirectory;
 	}
 

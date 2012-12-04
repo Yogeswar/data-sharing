@@ -72,7 +72,7 @@ public class DataManager {
             Directory recvdir = entry.getValue();
             Directory dir = this.data.get(key);
             if(dir == null){
-                this.data.put(key, dir);
+                this.data.put(key, recvdir);
             } else {
                 if(dir.getVersion() < recvdir.getVersion()){
                     this.data.put(key, recvdir);
