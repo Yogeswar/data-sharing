@@ -36,10 +36,11 @@ public class FileChunk {
     }
 
     public String getPart ( String filename, int partno ){
+        
          
 	 String path =".\\temp\\";
          String fileToReturn=filename+partno+".bin";
-         String completePath =path+fileToReturn;
+             String completePath =path+fileToReturn;
          
          File f = new File(completePath);
          if(f.exists()){
@@ -47,7 +48,11 @@ public class FileChunk {
          }
          else
              return null;
-         
     }
-        
+    
+    public FileChunk returnPath(String filename ,int partno){
+        FileChunk fc=new FileChunk();   
+        fc.getPart(filename, partno);
+        return fc;
+    }
 }
