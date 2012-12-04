@@ -434,7 +434,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         }
         
         public void DataUpdate(String recvIp, Object[] obj){
-            this.dataManager.recieveUpdate((Map<String, Node>)obj[0], (Map<String, Directory>)obj[1]);
+            this.setListOfDirectionDownloadComboBox(this.dataManager.recieveUpdate((Map<String, Node>)obj[0], (Map<String, Directory>)obj[1]));
         }
         
         public void AckLock(String recvIp, String request){
