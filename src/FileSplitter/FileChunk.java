@@ -7,6 +7,8 @@ package FileSplitter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +37,7 @@ public class FileChunk {
         this.chunkNumber = chunkNumber;
     }
 
-    public String getPart ( String filename, int partno ){
+    public File getPart ( String filename, int partno ) throws IOException{
         
          
 	 String path =".\\temp\\";
@@ -44,15 +46,25 @@ public class FileChunk {
          
          File f = new File(completePath);
          if(f.exists()){
-             return completePath;
+             //boolean create =f.createNewFile();
+             String name= f.getName();
+             long length =f.length();
+             //f.lastModified();
+             return f;
          }
          else
              return null;
     }
-    
-    public FileChunk returnPath(String filename ,int partno){
+    /*
+    public FileChunk fileObj(String filename ,int partno){
         FileChunk fc=new FileChunk();   
-        fc.getPart(filename, partno);
+        try {
+            fc.getPart(filename, partno);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(FileChunk.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return fc;
     }
+    * */
 }
