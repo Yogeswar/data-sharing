@@ -1,6 +1,5 @@
 package dataHandler;
 import java.io.File;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,11 +17,11 @@ import java.util.TreeMap;
  * @author Pradeep Raghuwanshi
  *
  */
-public class Directory implements Serializable{
+public class Directory {
 	
 	public static final ArrayList<String> finalDirectory = new ArrayList<String>();
-
-
+	
+	public boolean filePresent = false;
 	/*
 	 * Map contains the key as the pathname of the directory and value as the Directory Object with all child directories and files information.
 	 */
@@ -337,6 +336,40 @@ public class Directory implements Serializable{
 	}
 	
 	
+	
+	/*
+	 * Method to set read lock to the file pathname passed and all its parent directories.
+	 */
+	public boolean isFilePresent(String filePathname){
+		
+		Iterator<String> fileItr = this.getSubFilesPath().iterator(); // to iterate all files in the current directory
+		
+		while(fileItr.hasNext()){ // for each file in given directory
+			String tempFileName = fileItr.next().trim();
+			if(filePathname.trim().equals(tempFileName)){ // if file is found set isPresent to true
+				filePresent = true;
+				System.out.println("Directory pathname:----------------------- "+this.getDirectoryPath());
+				System.out.println("File pathname:---------------------------- "+tempFileName);
+				System.out.println("Inside file searching file:--------------- "+filePathname+filePresent);
+				return filePresent; // if file is found in sub directory of Directory passed (i.e dir here)
+			}
+		}
+
+		Iterator<Directory> itr = this.subDirectoriesPath.iterator();
+		
+		while(itr.hasNext()){ // for each directory
+			Directory tempDir = itr.next();
+			if(tempDir.isFilePresent(filePathname)){
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	
+	
+	
 	/*
 	 * Takes Top level Directory object and directory path as a parameter and returns list of files existing in the parent directory
 	 */
@@ -608,4 +641,5 @@ public class Directory implements Serializable{
 	public static ArrayList<String> getFinaldirectory() {
 		return finalDirectory;
 	}
+
 }
