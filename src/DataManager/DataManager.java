@@ -81,7 +81,11 @@ public class DataManager {
     
     public void requestLock(String pathName){
         this.listener.requestLock(pathName);
-        this.directory.readFile(this.directory, pathName);
+        for (Map.Entry<String,Directory> entry : data.entrySet()) {
+            String key = entry.getKey();
+            Directory dir = entry.getValue();
+            dir.readFile(dir, pathName);
+        }    
         this.ackToRecieve.put(pathName, this.timeStamp.size());
     }
     
