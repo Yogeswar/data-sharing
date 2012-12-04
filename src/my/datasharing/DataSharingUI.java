@@ -344,6 +344,12 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             File selected = chooser.getSelectedFile();            
             this.setAddDirectoryComboBox(dataManager.addDir(selected.getPath()));
             this.setListOfDirectionDownloadComboBox(dataManager.getAllDir());
+            for (Map.Entry<String,Node> entry : this.timeStamp.entrySet()) {
+                String key = entry.getKey();
+                Node node = entry.getValue();
+                this.builder.dataUpdate(node.getIp(), this.dataManager.getDataUpdate());
+            }
+            
         }
     }//GEN-LAST:event_addDirectoryActionPerformed
 
