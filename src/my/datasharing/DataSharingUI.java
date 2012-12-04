@@ -99,6 +99,11 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         addDirectory.setText("Add Directory");
         addDirectory.addActionListener(new java.awt.event.ActionListener() {
@@ -364,6 +369,12 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         this.dataManager.requestLock(selectedFile);
     }//GEN-LAST:event_downloadActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        this.builder.disconnect(SERVER_IP);
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
+
     //data Manager function 
     public void revieveUpdate(Map<String, Node> timeStamp, Map<String, Directory> recvData){
         this.timeStamp = timeStamp;
@@ -428,7 +439,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         
         }
         
-        public void FileBlock(String recvIp, String request){
+        public void FileBlock(String recvIp, File fb){
         
         }
 
