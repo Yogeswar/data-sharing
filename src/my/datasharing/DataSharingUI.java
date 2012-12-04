@@ -385,6 +385,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     
     public void locked(String request){
         //Start Downloading
+        this.builder.reqFile(request);
     }
 
     //parser function calls
@@ -403,7 +404,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         }
         
         public void ReqFileDetails(String recvIp, String request){
-            
+            fileManager.get
         }
         
         public void ReqFileBlock(String recvIp, String request, int blockId){
@@ -509,6 +510,8 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     private MessageParser parser;
     private Node selfNode;
     private Map<String, Node> timeStamp;
+    private FileManager fileManager;
+    private FileSplitter fileSplitter;
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
