@@ -14,6 +14,18 @@ public class FileHeader {
     private int fileSize;
     private int numberofChunks;
     //private int chunkNumber;
+    
+    
+    public FileHeader fileValues (String filePathName){
+    	FileHeader fileHeader = new FileHeader();
+    	FileManager fileManager = new FileManager();
+    	
+    	fileHeader.setFileExtension(fileManager.getFileExtension(filePathName));
+    	fileHeader.setFileName(fileManager.getFileName(filePathName));
+    	fileHeader.setFileSize(fileManager.getFileSize(filePathName));
+    	fileHeader.setNumberofChunks(fileManager.getNumberOfParts(filePathName));
+    	return fileHeader;
+    }
 
     /**
      * @return the fileName
