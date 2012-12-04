@@ -17,6 +17,7 @@ import dataHandler.Directory;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -50,11 +51,12 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         } catch (UnknownHostException ex) {
             ex.printStackTrace();
         }
+        this.timeStamp = new HashMap<String, Node>();
         this.dataManager = new DataManager(this, selfNode);
         this.builder = new MessageBuilder();
         this.parser = new MessageParser();
         this.parser.addActionProvider(this);
-        this.builder.registerServer(selfNode.getIp());
+        this.builder.registerServer(selfNode, SERVER_IP);
         
     }
 
@@ -333,16 +335,21 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         {
             File selected = chooser.getSelectedFile();            
             this.setAddDirectoryComboBox(dataManager.addDir(selected.getPath()));
+            this.setListOfDirectionDownloadComboBox(dataManager.getAllDir());
         }
 
     }//GEN-LAST:event_addDirectoryActionPerformed
 
     private void listOfDirectionDownloadComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listOfDirectionDownloadComboBoxActionPerformed
         // TODO add your handling code here:
+        String selectedDir = (String) this.listOfDirectionDownloadComboBox.getSelectedItem();
+        this.setListOfFilesDownloadComboBox(this.dataManager.getAllFiles(selectedDir));
     }//GEN-LAST:event_listOfDirectionDownloadComboBoxActionPerformed
 
     private void addDirectoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDirectoryComboBoxActionPerformed
         // TODO add your handling code here:
+        String selectedDir = (String) this.addDirectoryComboBox.getSelectedItem();
+        this.setAddFileComboBox(this.dataManager.getFiles(selectedDir));
     }//GEN-LAST:event_addDirectoryComboBoxActionPerformed
 
     private void addFileComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileComboBoxActionPerformed
@@ -446,7 +453,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             System.out.println(dir.size());
             String dirArray[] = dir.toArray(new String[dir.size()]);
             ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
-            this.addDirectoryComboBox.setModel(AddDir);
+            this.addFileComboBox.setModel(AddDir);
     }
 
     public JProgressBar getjProgressBar1() {
@@ -465,7 +472,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             System.out.println(dir.size());
             String dirArray[] = dir.toArray(new String[dir.size()]);
             ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
-            this.addDirectoryComboBox.setModel(AddDir);
+            this.listOfDirectionDownloadComboBox.setModel(AddDir);
     }
 
     public JComboBox getListOfFilesDownloadComboBox() {
@@ -476,7 +483,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             System.out.println(dir.size());
             String dirArray[] = dir.toArray(new String[dir.size()]);
             ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
-            this.addDirectoryComboBox.setModel(AddDir);
+            this.listOfFilesDownloadComboBox.setModel(AddDir);
     }
     
 

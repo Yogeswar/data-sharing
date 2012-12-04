@@ -16,7 +16,7 @@ public interface MsgAction
         public void ReqLock(String recvIp, String request);
         public void ReqFileDetails(String recvIp, String request);
         public void ReqFileBlock(String recvIp, String request, int blockId);
-        public void DataUpdate(String recvIp, Map<String, Directory> data);
+        public void DataUpdate(String recvIp, Object[] obj);
         public void AckLock(String recvIp, String request);
         public void FileDetails(String recvIp, String request);
         public void FileBlock(String recvIp, String request);	

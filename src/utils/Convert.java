@@ -26,6 +26,7 @@ public class Convert {
 	  }
 	  catch (IOException ex) {
 	    //TODO: Handle the exception
+              ex.printStackTrace();
 	  }
 	  return bytes;
 	}

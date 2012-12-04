@@ -42,29 +42,13 @@ public class MessageBuilder
 	}
 
 	//Register the client details at the Server
-	public Node registerServer(String ip)
+	public void registerServer(Node node, String ip)
 	{
-		//storage myip = new storage();
-                Node myip =new Node(ip, ip, CMD_AM_HERE);
-		
-		try 
-		{
-			//Generate the loacl host IP and set the IP address
-			myip.setIp(InetAddress.getLocalHost().getHostAddress());
-		} 
-		catch (UnknownHostException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		myip.setrole("participant");	//set the role of client to participant
-		byte[] mainData = conv.toByteArray(myip);	
+		byte[] mainData = conv.toByteArray((Object)node);
 		data = new byte[mainData.length + 1];
 		data[0] = CMD_REGISTER;			//Append message type to the data
 		System.arraycopy(mainData, 0, data, 1, mainData.length);	//Copy contents of mainData array to data array
 		new MyClient(this.data, ip, 5001);	//Send data through the client
-		return myip;
-
 	}
 	
         public void reqStatusUpdate(String ip){
@@ -105,7 +89,7 @@ public class MessageBuilder
             
         }
         
-        public void dataUpdate(String ip, Object[] obj){
+        public void dataUpdate(String ip, Object obj){
             data = new byte[1];
             data[0] = MessageBuilder.CMD_DATA_UPDATE;	//Append message type to the data 
             new MyClient(this.data, ip, 5001);	//Send message using client

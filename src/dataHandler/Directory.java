@@ -1,5 +1,6 @@
 package dataHandler;
 import java.io.File;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.TreeMap;
  * @author Pradeep Raghuwanshi
  *
  */
-public class Directory {
+public class Directory implements Serializable{
 	
 	public static final ArrayList<String> finalDirectory = new ArrayList<String>();
 
