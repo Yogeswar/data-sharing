@@ -102,7 +102,7 @@ public class MessageBuilder
             new MyClient(this.data, ip, 5000);	//Send data through the client                      
         }
         
-        public void dataUpdate(String ip, Object obj){
+        public void dataUpdate(String ip, Object[] obj){
             System.out.println("dataUpdate");
             byte[] mainData = conv.toByteArray(obj);
             data = new byte[mainData.length + 1];

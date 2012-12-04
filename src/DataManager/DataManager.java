@@ -36,10 +36,10 @@ public class DataManager {
         listener.requestDataUpdate();
     }
     
-    public Object getDataUpdate(){
+    public Object[] getDataUpdate(){
         Object[] obj = new Object[2]; 
         obj[0] = this.timeStamp;
-        obj[1] = this.directory;
+        obj[1] = this.data;
         return obj;
     }
     
