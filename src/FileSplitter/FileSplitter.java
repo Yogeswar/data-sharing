@@ -21,7 +21,7 @@ public class FileSplitter {
 
  {
   
-  FileManager fm =new FileManager(path); 
+  FileManager fm =new FileManager(); 
   //log ("File Is Reading "+ SourceFileName );
   File willBeRead = new File ( path );
   int FILE_SIZE = (int) willBeRead.length();
