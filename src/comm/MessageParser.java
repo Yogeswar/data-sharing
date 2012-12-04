@@ -1,6 +1,7 @@
 package comm;
 //Interpret the message types in data
 import DataManager.Node;
+import FileSplitter.FileHeader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -110,15 +111,19 @@ public class MessageParser implements ServerListener
 	}
         
         private void parseReqDataUpdate(){
-            
+            this.action.ReqDataUpdate(recvIP);
         }
         
         private void parseReqFileDetails(){
-            
+            conv = new Convert();
+            String pathName = (String) conv.toObject(this.data);
+            this.action.ReqFileDetails(recvIP, pathName);
         }
         
         private void parseReqLock(){
-            
+            conv = new Convert();
+            String pathName = (String) conv.toObject(this.data);
+            this.action.ReqLock(recvIP, pathName);            
         }
         
         private void parseReqFileBlock(){
@@ -126,15 +131,21 @@ public class MessageParser implements ServerListener
         }
         
         private void parseFileDetails(){
-            
+            conv = new Convert();
+            FileHeader fh = (FileHeader) conv.toObject(this.data);
+            this.action.FileDetails(recvIP, fh);
         }
         
         private void parseAckLock(){
-            
+            conv = new Convert();
+            String pathName = (String) conv.toObject(this.data);
+            this.action.AckLock(recvIP, pathName);                        
         }
         
         private void parseDataUpdate(){
-            
+            conv = new Convert();
+            Object[] obj = (Object[]) conv.toObject(this.data);
+            this.action.DataUpdate(recvIP, obj);            
         }
 	
 
@@ -142,7 +153,7 @@ public class MessageParser implements ServerListener
 	private void parseFileBlock() 
 	{
 		// TODO Auto-generated method stub
-		String filename = recvIP + ".au";
+		String filename = recvIP + ".bin";
 		File inFile = new File(filename);	//Create a file to save recorded data
 		if(inFile.exists())
 		{
@@ -168,7 +179,7 @@ public class MessageParser implements ServerListener
 			e.printStackTrace();
 		}
         
-		this.action.recieveFile(inFile, this.recvIP);
+		this.action.FileBlock(this.recvIP, inFile);
 		
 	}
 
@@ -185,7 +196,8 @@ public class MessageParser implements ServerListener
 		} 
 		catch(Exception e)
 		{
-			//Exception code
+                    e.printStackTrace();
+                    //Exception code
 		}
 	}		
 }

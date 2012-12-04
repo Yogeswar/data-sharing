@@ -110,6 +110,7 @@ public class DataManager {
    public void lockAck(String ip, String request){
        int temp = (this.ackToRecieve.get(request).intValue())-1;              
        if(temp == 0){
+           
            this.listener.locked(request);
        } else {
            this.ackToRecieve.put(request, new Integer(temp));
