@@ -17,16 +17,16 @@ import javax.swing.*;
 public class FileSplitter {
 
 
- public ArrayList<String> readAndFragment ( String SourceFileName, int CHUNK_SIZE ) throws IOException
+ public ArrayList<String> readAndFragment ( String path, int CHUNK_SIZE ) throws IOException
 
  {
   
-  FileManager fm =new FileManager(SourceFileName); 
+  FileManager fm =new FileManager(path); 
   //log ("File Is Reading "+ SourceFileName );
-  File willBeRead = new File ( SourceFileName );
+  File willBeRead = new File ( path );
   int FILE_SIZE = (int) willBeRead.length();
   ArrayList<String> nameList = new ArrayList<String> ();
-  String path="C://Users/manas/Downloads/Programming interviews exposed.pdf";
+  //String path="C://Users/manas/Downloads/Programming interviews exposed.pdf";
   int NUMBER_OF_CHUNKS = 1;
   byte[] temporary = null;
   
@@ -55,10 +55,9 @@ public class FileSplitter {
       totalBytesRead += bytesRead;
       NUMBER_OF_CHUNKS++;
      }
-     
-    	 
-      write(temporary, "D://"+PART_NAME);
-     
+
+      write(temporary,".\\temp\\"+PART_NAME);
+      //write(temporary, "D://"+PART_NAME);
      //nameList.add("D://"+PART_NAME);
      System.out.println("Total Bytes Read: "+totalBytesRead + PART_NAME);
     }
