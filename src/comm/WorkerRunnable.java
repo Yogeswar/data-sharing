@@ -34,6 +34,7 @@ public class WorkerRunnable implements Runnable
     		{
         	String Ip1=clientSocket.getInetAddress().toString();	//Obtain the IP address from socket data
 			String Ip = Ip1.substring(1);
+                        System.out.println(Ip);
 			is = new BufferedInputStream(clientSocket.getInputStream());	 
 			byte[] bytes = IOUtils.toByteArray(is);	//Read data from InputStream
 			listener.serverNotify(bytes, Ip);	//Process the data read
