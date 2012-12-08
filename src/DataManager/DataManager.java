@@ -44,10 +44,11 @@ public class DataManager {
     }
 
     public List<String> addDir(String pathName) {
-        if (data.get(this.selfTimeStamp.getIp()) != null) {
+        if (data.get(this.selfTimeStamp.getId()) != null) {
             data.get(this.selfTimeStamp.getId()).addDirectory(data.get(this.selfTimeStamp.getId()), pathName);
         } else {
             data.put(this.selfTimeStamp.getId(), new Directory(pathName));
+            data.get(this.selfTimeStamp.getId()).createDirList();
         }
         data.get(this.selfTimeStamp.getId()).returnValues();
         return data.get(this.selfTimeStamp.getId()).finalDirectory;
@@ -94,7 +95,7 @@ public class DataManager {
     }
 
     public boolean lockRequested(String pathName, String ip) {
-        if (this.directory.isFileReadLocked.get(pathName) == 1) {
+        if (data.get(this.selfTimeStamp.getId()).isFileReadLocked.get(pathName) == 1) {
             this.requestList.add(ip);
             return false;
         }
