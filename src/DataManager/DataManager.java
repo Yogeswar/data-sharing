@@ -99,7 +99,8 @@ public class DataManager {
              String key = entry.getKey();
              Directory dir = entry.getValue();
              if (dir != null && dir.isFilePresent(pathName)) {
-                 if(dir.isFileReadLocked.get(pathName) == 1){
+                 System.out.println(dir.isFileReadLocked.get(pathName));
+                 if(dir.isFileReadLocked.get(pathName)!= null && dir.isFileReadLocked.get(pathName) == 1){
                      this.requestList.add(ip);
                      return false;
                  }
