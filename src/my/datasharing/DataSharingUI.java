@@ -17,6 +17,7 @@ import dataHandler.Directory;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         listOfFilesDownloadComboBox = new javax.swing.JComboBox();
         addDirectory = new javax.swing.JButton();
         removeDirectory = new javax.swing.JButton();
-        addFile = new javax.swing.JButton();
+        Refresh = new javax.swing.JButton();
         listOfDirectionDownloadComboBox = new javax.swing.JComboBox();
         download = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
@@ -100,6 +101,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        Users = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -122,10 +124,10 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             }
         });
 
-        addFile.setText("Add File");
-        addFile.addActionListener(new java.awt.event.ActionListener() {
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addFileActionPerformed(evt);
+                RefreshActionPerformed(evt);
             }
         });
 
@@ -179,7 +181,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(addFile)
+                                .addComponent(Refresh)
                                 .addGap(27, 27, 27)
                                 .addComponent(addDirectory))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -190,7 +192,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(addDirectoryComboBox, 0, 204, Short.MAX_VALUE)
                                     .addComponent(addFileComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -229,7 +231,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
                     .addComponent(jLabel7))
                 .addGap(38, 38, 38)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addFile)
+                    .addComponent(Refresh)
                     .addComponent(download)
                     .addComponent(addDirectory))
                 .addGap(20, 20, 20)
@@ -259,12 +261,20 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         jLabel10.setFont(new java.awt.Font("Perpetua Titling MT", 1, 11)); // NOI18N
         jLabel10.setText("cREATED BY:    yOGESHWAR vijaykumar,  manas bapna, pradeep raghuwanshi, sonali rathod");
 
+        Users.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Users.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UsersActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -272,13 +282,14 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
                                 .addGap(10, 10, 10)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(212, 212, 212)
-                                .addComponent(jLabel8))
-                            .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel10)))
-                        .addGap(0, 125, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel10))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(212, 212, 212)
+                                .addComponent(jLabel8)
+                                .addGap(99, 99, 99)
+                                .addComponent(Users, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
@@ -298,7 +309,9 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel9)
                 .addGap(13, 13, 13)
-                .addComponent(jLabel8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(Users, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -324,9 +337,10 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         pack();
     }// </editor-fold>//GEN-END:initComponents
     //Function process 'Add File' button click
-    private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
         // TODO add your handling code here:   
-    }//GEN-LAST:event_addFileActionPerformed
+        this.refreshData();
+    }//GEN-LAST:event_RefreshActionPerformed
 
     //Function process 'Remove Directory' button click
     private void removeDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeDirectoryActionPerformed
@@ -389,6 +403,10 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         this.builder.disconnect(SERVER_IP);
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
+
+    private void UsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UsersActionPerformed
     
     //data Manager function 
     // These functions are called from the data Manager
@@ -428,6 +446,14 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     // The Data Parser calls these functions to notifies 
     public void IpUpdate(Map<String, Node> timestamp, String recvIp) {
         this.timeStamp = timestamp;
+        this.refreshData();
+        List<String> users = new ArrayList<String>();
+        for (Map.Entry<String, Node> entry : this.timeStamp.entrySet()) {
+            String key = entry.getKey();
+            Node node = entry.getValue();
+            users.add(node.getId());
+        }
+        this.setUsers(users);
     }
 
     public void ReqDataUpdate(String recvIp) {
@@ -463,6 +489,14 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
 
     public void returnLockRequest(String request, String ip) {
         this.builder.ackLock(ip, request);
+    }
+    
+    public void refreshData(){
+         for (Map.Entry<String, Node> entry : this.timeStamp.entrySet()) {
+            String key = entry.getKey();
+            Node node = entry.getValue();
+            this.builder.reqDataUpdate(node.getIp());
+        }
     }
 
     public Node getSelfNode() {
@@ -525,6 +559,17 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         this.listOfFilesDownloadComboBox.setModel(AddDir);
     }
 
+    public JComboBox getUsers() {
+        return Users;
+    }
+
+    public void setUsers(List<String> dir) {
+        System.out.println(dir.size());
+        String dirArray[] = dir.toArray(new String[dir.size()]);
+        ComboBoxModel<String> AddDir = new DefaultComboBoxModel<String>(dirArray);
+        this.Users.setModel(AddDir);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -544,9 +589,10 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     private FileSplitter fileSplitter;
     private FileManager fileManager;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Refresh;
+    private javax.swing.JComboBox Users;
     private javax.swing.JButton addDirectory;
     private javax.swing.JComboBox addDirectoryComboBox;
-    private javax.swing.JButton addFile;
     private javax.swing.JComboBox addFileComboBox;
     private javax.swing.JButton download;
     private javax.swing.JLabel jLabel1;
