@@ -95,12 +95,16 @@ public class DataManager {
     }
 
     public boolean lockRequested(String pathName, String ip) {
-        if(data.get(this.selfTimeStamp.getId()).isFileReadLocked != null){
-            if (data.get(this.selfTimeStamp.getId()).isFileReadLocked.get(pathName) == 1) {
-                this.requestList.add(ip);
-                return false;
-            }
-        }
+        for (Map.Entry<String, Directory> entry : data.entrySet()) {
+             String key = entry.getKey();
+             Directory dir = entry.getValue();
+             if (dir.isFilePresent(pathName)) {
+                 if(dir.isFileReadLocked.get(pathName) == 1){
+                     this.requestList.add(ip);
+                     return false;
+                 }
+             }
+         }
         return true;
     }
 
