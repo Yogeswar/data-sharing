@@ -95,7 +95,7 @@ public class DataManager {
     }
 
     public boolean lockRequested(String pathName, String ip) {
-        if(data.get(this.selfTimeStamp.getId()).isFileReadLocked.get(pathName) != null){
+        if(data.get(this.selfTimeStamp.getId()).isFileReadLocked != null){
             if (data.get(this.selfTimeStamp.getId()).isFileReadLocked.get(pathName) == 1) {
                 this.requestList.add(ip);
                 return false;
