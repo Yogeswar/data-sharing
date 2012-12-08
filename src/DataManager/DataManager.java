@@ -98,7 +98,7 @@ public class DataManager {
         for (Map.Entry<String, Directory> entry : data.entrySet()) {
              String key = entry.getKey();
              Directory dir = entry.getValue();
-             if (dir.isFilePresent(pathName)) {
+             if (dir != null && dir.isFilePresent(pathName)) {
                  if(dir.isFileReadLocked.get(pathName) == 1){
                      this.requestList.add(ip);
                      return false;
