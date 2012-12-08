@@ -440,6 +440,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     //Data Manager notifies UI that a lock has been acquired and file transfers can begin
     public void locked(String ip, String request) {
         //Start Downloading
+        
         this.builder.reqFile(ip, request);
     }
 
