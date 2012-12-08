@@ -22,6 +22,10 @@ public class Directory implements Serializable{
 	
 	public ArrayList<String> finalDirectory = new ArrayList<String>();
 	
+	//public ArrayList<String> finalDirectoryTest = new ArrayList<String>();
+	
+	//public ArrayList<String> finalDirectory = new ArrayList<String>();
+	
 	public boolean filePresent = false;
 	/*
 	 * Map contains the key as the pathname of the directory and value as the Directory Object with all child directories and files information.
@@ -117,13 +121,62 @@ public class Directory implements Serializable{
 		this.setSubDirectoriesPath(tempSubDirectories); // storing sub directories of the current directory
 		this.setSubFilesPath(tempSubFiles); // storing sub files of the current directory
 		
-		if(pathname.indexOf(".") == -1 && !getFinaldirectory().contains(pathname))
-			getFinaldirectory().add(pathname);
+		/*if(pathname.indexOf(".") == -1 && !getFinaldirectory().contains(pathname)) // . is to check that the pathname is not a file and contains is to check the same directory is not added twice
+			getFinaldirectory().add(pathname);*/
 		
 		
 	}
 	
+	/*
+	 * To return the directory list containing all directories in a given top level directory
+	 
 	
+	public void saveDirList (String topDirPathName){
+		
+		// Create a file object for your root directory
+		File f1 = new File ( topDirPathName ) ;
+		// Get all the files and directory under your directory
+		File[] strFilesDirs = f1.listFiles ( );
+		int size = 0;
+		if(strFilesDirs != null)
+			size = strFilesDirs.length;
+		//To save the current directory details
+		
+		for ( int i = 0 ; i < size ; i ++ ) {
+			if ( strFilesDirs[i].isDirectory ( ) ) {
+				getFinaldirectory().add(strFilesDirs[i].toString());
+			}
+		}
+	}*/
+	
+	
+	
+	public void createDirList(){
+		
+		ArrayList<Directory> tempList = new ArrayList<Directory>();
+		tempList.add(this);
+		
+		ArrayList<Directory> tempListSubDir = new ArrayList<Directory>();
+		
+		while(tempList.isEmpty() != true){
+			Iterator<Directory> itr = tempList.iterator(); // for each sub dir
+			tempListSubDir.removeAll(tempListSubDir);
+			while(itr.hasNext()){ // for each sub dir 
+				Directory tempDir = itr.next();
+				finalDirectory.add(tempDir.getDirectoryPath());
+				tempListSubDir.addAll(tempDir.getSubDirectoriesPath());
+			}
+			tempList.removeAll(tempList); //
+			tempList.addAll(tempListSubDir);
+			
+		}
+		
+	}
+	
+	
+	/*
+	 * Method to check all directories and files inside the top level directory 
+	 */
 	public void returnValues(){
 		
 		System.out.println("Directory path is:-"+this.getDirectoryPath());
@@ -152,7 +205,25 @@ public class Directory implements Serializable{
 			Directory tempDir = itr.next();
 			if(dirPathname.equals(tempDir.getDirectoryPath())){
 				version++;
+				System.out.println("Inside deleteDirectory:"+ dir.getFinaldirectory());
+				getFinaldirectory().remove(dirPathname); // delete the directory from the final directory structure
+				
+				// to check if there are sub directories to remove
+				Iterator<String> finalDirItr = getFinaldirectory().iterator();
+				ArrayList<String> tempDirToDeleteList = new ArrayList<String>();
+				while (finalDirItr.hasNext()){
+					String tempFinalDirValue = finalDirItr.next();
+					// to remove the child dir if the parent directory is deleted
+					if(tempFinalDirValue.indexOf(dirPathname) != -1)   // for ex if c:/data is removed c:/data/X should also be removed
+						tempDirToDeleteList.add(tempFinalDirValue);    // adding each child directory in a new list
+						//getFinaldirectory().remove(tempFinalDirValue); 
+						
+				}
+				
+				for (int i = 0; i<tempDirToDeleteList.size();i++)
+					getFinaldirectory().remove(tempDirToDeleteList.get(i)); // deleting each child directory
 				itr.remove();
+				System.out.println("Inside deleteDirectory:"+ dir.getFinaldirectory());
 				return dir; // if found in sub directory of Directory passed (i.e dir here) than remove sub directory from current directory and pass dir.
 			}else{
 				deleteDirectory(tempDir, dirPathname); // else pass the sub directory and check in sub directory for dir pathname.
@@ -639,7 +710,7 @@ public class Directory implements Serializable{
 	/**
 	 * @return the final directory
 	 */
-	public  ArrayList<String> getFinaldirectory() {
+	public ArrayList<String> getFinaldirectory() {
 		return finalDirectory;
 	}
 
