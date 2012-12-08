@@ -408,7 +408,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         }
     }
 
-    //Request Lock. The data Mangager notifies UI to send 
+    //Request Lock. The data Manager notifies UI to send LOck request messages
     public void requestLock(String request) {
         for (Map.Entry<String, Node> entry : this.timeStamp.entrySet()) {
             String key = entry.getKey();
@@ -419,12 +419,13 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
         }
     }
 
+    //Data Manager notifies UI that a lock has been acquired and file transfers can begin
     public void locked(String ip, String request) {
         //Start Downloading
         this.builder.reqFile(ip, request);
     }
 
-    //parser function calls
+    // The Data Parser calls these functions to notifies 
     public void IpUpdate(Map<String, Node> timestamp, String recvIp) {
         this.timeStamp = timestamp;
     }
