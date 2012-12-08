@@ -4,11 +4,13 @@
  */
 package FileSplitter;
 
+import java.io.Serializable;
+
 /**
  *
  * @author manas
  */
-public class FileHeader {
+public class FileHeader implements Serializable {
     private String fileName ;
     private String fileExtension;
     private int fileSize;

@@ -483,6 +483,7 @@ public class DataSharingUI extends javax.swing.JFrame implements DataListener, M
     }
 
     public void FileDetails(String recvIp, FileHeader fh) {
+        System.out.println(fh);
     }
 
     public void FileBlock(String recvIp, File fb) {
