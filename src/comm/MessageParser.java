@@ -46,7 +46,8 @@ public class MessageParser implements ServerListener {
 
     //Start server thread
     public void startServer() {
-        server = new Cserver(5000);
+        System.out.println("Here Cserver is called with port 5001:- Message parser line 50");
+        server = new Cserver(5001);
         server.registerListener(this);
         new Thread(server).start();
     }
