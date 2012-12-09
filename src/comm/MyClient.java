@@ -19,6 +19,7 @@ public class MyClient {
             System.out.println(port);
 
             soc = new Socket(ip, port);	// server is listening on this port
+            System.out.println("One more socket in MyClient.java with post:-"+soc.getLocalPort());
             toserver = new BufferedOutputStream(soc.getOutputStream());
             toserver.write(buf, 0, buf.length);	//Write data onto the socket
             toserver.close();
