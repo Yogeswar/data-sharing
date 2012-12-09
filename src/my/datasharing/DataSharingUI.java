@@ -39,7 +39,7 @@ import javax.swing.JProgressBar;
 public class DataSharingUI extends javax.swing.JFrame implements DataListener, MsgAction {
     //Server Id
 
-    static private String SERVER_IP = "192.168.0.165";
+    static private String SERVER_IP = "192.168.0.190";
 
     /**
      * Creates new form DataSharingUI
