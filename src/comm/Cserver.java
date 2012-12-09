@@ -14,7 +14,7 @@ public class Cserver implements Runnable {
 		this.listener = sl;
 	}
 	
-	int serverPort=5000; //Initialize the server port
+	int serverPort= 5000; //Initialize the server port
 	Thread runningThread= null; 
 	ServerSocket serverSocket = null;
 	
@@ -36,11 +36,13 @@ public class Cserver implements Runnable {
 			try
 			{
 				clientSocket = this.serverSocket.accept(); //accept the socket connection from the client 
+                                System.out.println("clientSocket:-"+clientSocket.getLocalPort());
 			}
 			catch (Exception ex) 
 			{
 				ex.printStackTrace();
             }
+            System.out.println("incoming");
             new Thread(new WorkerRunnable(clientSocket, listener)).start(); // start a new thread that continues listening to the clients
 	    }
 	}
@@ -52,16 +54,20 @@ public class Cserver implements Runnable {
 		try
 		{
             this.serverSocket = new ServerSocket(this.serverPort);
+            System.out.println("serverSocket:-"+serverSocket.getLocalPort());
         }	
 		catch (Exception ex) 
 		{
-        	ex.printStackTrace();
+                System.out.println("Could not listen on port: 5000");
+                ex.printStackTrace();
+                System.exit(-1);
+        	
         }
 	}
 	
 	public static void main(String arg[]) throws UnknownHostException, IOException
 	{
-		Cserver server = new Cserver(5000);
+		Cserver server = new Cserver(4444);
 		new Thread(server).start();
 	}
 }
